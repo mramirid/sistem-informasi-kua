@@ -14,10 +14,12 @@ void menuWaiting();
 void gambar(char str[14]);
 //kurang antrian dan waiting list
 //menune menuAntrian
+/*
 int main(){
 	mainMenu();
 	return 0;
 }
+*/
 
 void mainMenu(){
 	int pilihan;
