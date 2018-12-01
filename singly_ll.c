@@ -7,7 +7,8 @@
 	Node_SINGLY *new_node = (Node_SINGLY*)malloc(sizeof(Node_SINGLY));
 	return new_node;
 }
- void Insert(Node_SINGLY** head, Node_SINGLY* now, Node_SINGLY* new_node){
+
+void Insert(Node_SINGLY** head, Node_SINGLY* now, Node_SINGLY* new_node){
 	if(now == NULL){
 		new_node->right=*head;
 		*head=new_node;
@@ -17,14 +18,16 @@
 		now->right=new_node;	
 	}
 }
- void Delete(Node_SINGLY** head,Node_SINGLY* pre, Node_SINGLY* now){
+
+void Delete(Node_SINGLY** head,Node_SINGLY* pre, Node_SINGLY* now){
 	if(pre==NULL)
 		*head=now->right;
 	else
 		pre->right=now->right;
 	free(now);
 }
- void tambah_data(Node_SINGLY **head){
+
+void tambah_data(Node_SINGLY **head){
 	Node_SINGLY* new_node = create_node();
 	Node_SINGLY* temp=*head;
 	
@@ -38,7 +41,8 @@
 	
 	Insert(head,temp,new_node);
 }
- void cetak(Node_SINGLY* head,int next){
+
+void cetak(Node_SINGLY* head,int next){
 	Node_SINGLY* temp=head;
 	int a,x=34,y=0;
 	
@@ -61,7 +65,8 @@
 		printf("DATA KOSONG");	
 	}
 }
- void edit(Node_SINGLY** head){
+
+void edit(Node_SINGLY** head){
 	char nip[sizeof((*head)->nip)];
 	Node_SINGLY* temp=*head;
 	
@@ -75,7 +80,8 @@
 	printf("usia : ");scanf("%d",&(temp->usia));
 	
 }
- void hapus(Node_SINGLY** head){
+
+void hapus(Node_SINGLY** head){
 	char nip[sizeof((*head)->nip)];
 	Node_SINGLY* temp=*head,*pre=NULL;
 	
