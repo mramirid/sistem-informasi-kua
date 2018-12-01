@@ -1,3 +1,4 @@
+#include"header.h"
 #include<stdio.h>
 #include<conio.h>
 #include<windows.h>
@@ -14,18 +15,20 @@ void menuWaiting();
 void gambar(char str[14]);
 //kurang antrian dan waiting list
 //menune menuAntrian
-/*
+
+Node_SINGLY* head_sing=NULL;
+
 int main(){
 	mainMenu();
 	return 0;
 }
-*/
+
 
 void mainMenu(){
-	int pilihan;
+	int pilihan,x,y;
 	system("cls");
-	for(int y=0; y<20; y++){
-		for(int x=50; x<71; x++){
+	for(y=0; y<20; y++){
+		for(x=50; x<71; x++){
 			if((x==50 || x==70) || (y==0 || y==19)){
 				gotoXY(x,y);
 				printf("%c",219);				
@@ -53,8 +56,9 @@ void mainMenu(){
 }
 
 void gambar(char str[12]){
-	for(int y=0; y<30; y++){
-		for(int x=0; x<120; x++){
+	int x,y;
+	for(y=0; y<30; y++){
+		for(x=0; x<120; x++){
 			if((x==0 || x==119 || x==30 || x==31) || (y==0 || y==29)){
 				gotoXY(x,y);
 				printf("%c",219);				
@@ -66,27 +70,36 @@ void gambar(char str[12]){
 }
 
 void menuPegawai(){
-	int pilihan;
-	
-	gambar(" MENU PEGAWAI ");
-	
-	pilihan = tulisan(2,0,30);
-	system("cls");
-	switch(pilihan){
-		case 1: break;
-		case 2: break;
-		case 3: break;
-		case 4: break;
-		case 5: 
-				mainMenu();
-				break;
-		default :
-					system("cls");
-					printf("DATA TIDAK ADA");
-					getch();
-					menuPegawai();
+	int pilihan,a=1;
+	do{
+		system("cls");
+		gambar("MENU PEGAWAI");
+		cetak(head_sing,a);
+		
+		pilihan = tulisan(2,0,30);
+		system("cls");
+		
+		switch(pilihan){
+			case 1: 
+					tambah_data(&head_sing);
 					break;
-	}
+			case 2: 
+					edit(&head_sing);
+					break;
+			case 3: 
+					a=a+5;
+					break;
+			case 4: 
+					a=a-5;
+					break;
+			case 5:
+					hapus(&head_sing);
+					break;
+			case 6: 
+					mainMenu();
+					break;
+		}
+	}while(pilihan != 6);
 }
 
 void menuAntrian(){
@@ -150,15 +163,17 @@ int tulisan(int menu,int x,int y){
 				break;
 		case 2://=========== iki kanggo Menu Pegawai ============
 				gotoXY(x+2,3);
-				printf("1.Edit");
+				printf("1.tambah");
 				gotoXY(x+2,5);
-				printf("2.Hapus");
+				printf("2.edit");
 				gotoXY(x+2,7);
 				printf("3.Next");
 				gotoXY(x+2,9);
 				printf("4.Prev");
 				gotoXY(x+2,11);
-				printf("5.Back To Menu");
+				printf("5.hapus");
+				gotoXY(x+2,13);
+				printf("6.Back To Menu");
 				break;
 		case 3://=========== iki kanggo antrian ===============
 				gotoXY(x+2,3);
