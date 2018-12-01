@@ -1,239 +1,98 @@
+#include "header.h"
 #include <stdio.h>
-#include <conio.h>
 #include <stdlib.h>
 #include <string.h>
 
-//=========================STRUCT DEFINITION======================
-struct node 
-{
-	struct node *next;
-	char nip[30], nama[100], pendidikan[30], jabatan[30];
-};
-
-//========================FUNCTION DEFINITION=====================
-
-void deleteNode(node **head, node *pPre, node *pCur);
-void deleteList(node *head);
-void tambahData(node **head);	
-void updateData(node **head);	
-void hapusData(node **head);	
-void showData(node *head);		
-
-//==========================MAIN==================================
-
-int main()
-{
-	node *head=NULL;
-	char pilih;
-
-	do
-	{
-		system("cls");
-     
-    	printf("=======MENU DAFTAR PEGAWAI KUA=======\n");
-    	printf("1. TAMBAH DATA PEGAWAI\n");
-    	printf("2. UBAH DATA PEGAWAI\n");
-    	printf("3. HAPUS DATA PEGAWAI\n");
-    	printf("4. LIHAT DAFTAR PEGAWAI\n");
-    	printf("\nMASUKKAN PILIHAN (tekan q untuk keluar) : ");
-     
-    	scanf("%c", &pilih);
-    	fflush(stdin);
-     
-    	if (pilih == '1')
-    		tambahData(&head);
-		
-    	else if (pilih == '2')
-    		updateData(&head);
-		
-    	else if (pilih == '3')
-    		hapusData(&head);
-		
-    	else if (pilih == '4')
-		{
-    	 	showData(head);
-        	getch();
-    	} 
-	} 
-	while (pilih != 'q');
-	deleteList(head);
+Node_SINGLY* create_node(){
+	Node_SINGLY *new_node = (Node_SINGLY*)malloc(sizeof(Node_SINGLY));
+	return new_node;
 }
 
-//===========================DELETE NODE==========================
+void Insert(Node_SINGLY** head, Node_SINGLY* now, Node_SINGLY* new_node){
+	if(now == NULL){
+		new_node->right=*head;
+		*head=new_node;
+	}
+	else{
+		new_node->right=now->right;
+		now->right=new_node;	
+	}
+}
 
-void deleteNode(node **head, node *pPre, node *pCur)
-{
-	if (pPre == NULL)
-		*head = pCur -> next;
-	
+void Delete(Node_SINGLY** head,Node_SINGLY* pre, Node_SINGLY* now){
+	if(pre==NULL)
+		*head=now->right;
 	else
-	{
-		pPre -> next = pCur -> next;
-	}
-	free(pCur);
+		pre->right=now->right;
+	free(now);
 }
 
-//============================DELETE LIST=========================
-
-void deleteList(node *head)
-{
-	node *pTemp;
+void tambah_data(Node_SINGLY **head){
+	Node_SINGLY* new_node = create_node();
+	Node_SINGLY* temp=*head;
 	
-	while(head != NULL)
-	{
-		pTemp = head;
-		head = head->next;
-		free(pTemp);
-	}
+	printf("nama : ");scanf("%s",&(new_node->nama));
+	printf("nip : ");scanf("%s",&(new_node->nip));
+	printf("usia : ");scanf("%d",&(new_node->usia));
+	
+	if(temp != NULL)
+		while(temp->right != NULL)
+			temp=temp->right;
+	
+	Insert(head,temp,new_node);
 }
 
-//============================TAMBAH DATA=========================
-
-void tambahData(node **head)
-{
-	node *pegawai;
-	char nip[30], nama[100], pendidikan[30], jabatan[30];
+void cetak(Node_SINGLY* head,int next){
+	Node_SINGLY* temp=head;
+	int a,x=34,y=0;
 	
-	system("cls");
-	
-	fflush(stdin);
-	printf("Masukkan NIP\t\t: ");
-	scanf("%s",&nip);
-	
-	fflush(stdin);
-	printf("Masukkan Nama\t\t: ");
-	scanf("%[^\n]s",&nama);
-	
-	fflush(stdin);
-	printf("Masukkan Pendidikan\t: ");
-	scanf("%s",&pendidikan);
-	
-	fflush(stdin);
-	printf("Masukkan Jabatan\t: ");
-	scanf("%[^\n]s",&jabatan);
-	
-	pegawai = (node *)malloc(sizeof(node));
-	
-	strcpy(pegawai->nip,nip);
-	strcpy(pegawai->nama,nama);
-	strcpy(pegawai->pendidikan,pendidikan);
-	strcpy(pegawai->jabatan,jabatan);
-	pegawai->next = NULL;
-	
-	if(*head==NULL)
-		*head = pegawai;
-		
-	else
-	{
-		pegawai->next = *head;	
-		*head = pegawai;
-	}
-	printf("\n");	
-}
-
-//===========================UPDATE DATA==========================
-
-void updateData(node **head)
-{
-	node *pNew=*head;
-	char nip[30], nip2[30], nama[100], pendidikan[30], jabatan[30];	
-	system("cls");
-	
-	showData(*head);
-  	printf("Data yang akan diubah \nNIP\t\t: ");
-  	fflush(stdin);
-  	scanf("%s",&nip2);
-  	
-  	
-	while(pNew!=NULL && strcmp(pNew->nip,nip2))
-		pNew = pNew->next;
-	
-  	if(pNew != NULL)
-	{
-	  	printf("Data yang akan diubah \nNIP\t\t\t: ");
-	  	fflush(stdin);
-	  	scanf("%s",&nip);
-	
-	  	printf("Masukkan Nama\t\t: ");
-	  	fflush(stdin);
-	  	scanf("%[^\n]s",&nama);
-	  	
-		printf("Masukkan Pendidikan\t: ");
-		fflush(stdin);
-		scanf("%s",&pendidikan);
-		
-		printf("Masukkan Jabatan\t: ");
-		fflush(stdin);
-		scanf("%[^\n]s",&jabatan);
-	
-		strcpy(pNew->nip,nip);
-		strcpy(pNew->nama,nama);
-		strcpy(pNew->pendidikan,pendidikan);
-		strcpy(pNew->jabatan,jabatan);
-	}
-	else
-	{
-		printf("\nData tidak ditemukan");
-		getch();
-	}
-}
-
-//============================DELETE DATA=========================
-
-void hapusData(node **head)
-{
-	char nip2[30];
-	node *pCur, *pPre;
-
-	system("cls");
-	showData(*head);
-	printf("\nData yang akan dihapus \nNIP\t\t: ");
-	fflush(stdin);
-	scanf("%s", &nip2);
-
-	pPre = NULL;
-	pCur = *head;
-	//cari target value sampai ditemukan atau sampai pada akhir list
-	while (pCur != NULL && strcmp(pCur->nip,nip2))
-	{
-		pPre = pCur;
-		pCur = pCur -> next;
-	}
-
-	if (pCur == NULL)
-	{
-		printf("\nData tidak ditemukan");
-    	getch();
-	}
-	else
-		deleteNode(head, pPre, pCur);
-	
-}
-
-//============================SHOW DATA===========================
-
-void showData(node *head)
-{
-	node *pWalker=head;
-	int dataKe=1;
-	
-    system("cls");
-    
-    if(pWalker != NULL)
-    {
-    	while(pWalker != NULL)
-		{
-			printf("===========================================");
-			printf("\nDATA %i\n", dataKe);
-			printf("===========================================");
-    		printf("\nNIP\t\t: %s\n",pWalker->nip);
-    		printf("Nama\t\t: %s\n",pWalker->nama);
-    		printf("Pendidikan\t: %s\n",pWalker->pendidikan);
-    		printf("Jabatan\t\t: %s\n\n",pWalker->jabatan);
-    		dataKe++;
-    		pWalker=pWalker->next;
+	if(temp != NULL){
+		for(a=next;a>1;a--)
+			temp=temp->right;
+		while(temp != NULL && a <= 5){
+			gotoXY(x,y=y+2);
+			printf("nama : %s\n",temp->nama);
+			gotoXY(x,++y);
+			printf("nip : %s\n",temp->nip);
+			gotoXY(x,++y);
+			printf("usia : %d\n",temp->usia);
+			temp=temp->right;
+			a++;
 		}
 	}
-	else
-		printf("Data Kosong");
+	else{
+		gotoXY(x,y=y+2);
+		printf("DATA KOSONG");	
+	}
+}
+
+
+void edit(Node_SINGLY** head){
+	char nip[sizeof((*head)->nip)];
+	Node_SINGLY* temp=*head;
+	
+	printf("input nip data yang ingin di-edit : ");scanf("%s",&nip);
+
+	while(temp != NULL && strcmp(temp->nip,nip)){
+		temp=temp->right;
+	}
+	
+	printf("nama : ");scanf("%s",&(temp->nama));
+	printf("nip : ");scanf("%s",&(temp->nip));
+	printf("usia : ");scanf("%d",&(temp->usia));
+	
+}
+
+void hapus(Node_SINGLY** head){
+	char nip[sizeof((*head)->nip)];
+	Node_SINGLY* temp=*head,*pre=NULL;
+	
+	printf("input nip data yang ingin di-hapus : ");scanf("%s",&nip);
+	
+	while(temp != NULL && strcmp(temp->nip,nip)){
+		pre=temp;
+		temp=temp->right;
+	}
+	
+	Delete(head,pre,temp);
 }
