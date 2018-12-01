@@ -18,3 +18,9 @@ struct queue
 	node *front;
 	node *rear;
 };
+
+int main(){
+
+printf("Hello world");
+
+}
