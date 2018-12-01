@@ -2,11 +2,9 @@
 #include<stdio.h>
 #include<conio.h>
 #include<windows.h>
-
-HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+ HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 COORD CursorPosition;
-
-void gotoXY(int x, int y);
+ void gotoXY(int x, int y);
 int tulisan(int menu,int x,int y);//tulisan() = menampilkan tulisan pada menu (kode menu, koordinat x awal, koordinat y akhir)
 void mainMenu();
 void menuPegawai();
@@ -15,16 +13,12 @@ void menuWaiting();
 void gambar(char str[14]);
 //kurang antrian dan waiting list
 //menune menuAntrian
-
-Node_SINGLY* head_sing=NULL;
-
-int main(){
+ Node_SINGLY* head_sing=NULL;
+ int main(){
 	mainMenu();
 	return 0;
 }
-
-
-void mainMenu(){
+ void mainMenu(){
 	int pilihan,x,y;
 	system("cls");
 	for(y=0; y<20; y++){
@@ -54,8 +48,7 @@ void mainMenu(){
 					break;
 	}
 }
-
-void gambar(char str[12]){
+ void gambar(char str[12]){
 	int x,y;
 	for(y=0; y<30; y++){
 		for(x=0; x<120; x++){
@@ -68,8 +61,7 @@ void gambar(char str[12]){
 	gotoXY(57,0);
 	printf("%s",str);
 }
-
-void menuPegawai(){
+ void menuPegawai(){
 	int pilihan,a=1;
 	do{
 		system("cls");
@@ -101,8 +93,7 @@ void menuPegawai(){
 		}
 	}while(pilihan != 6);
 }
-
-void menuAntrian(){
+ void menuAntrian(){
 	int pilihan;
 	
 	gambar(" MENU ANTRIAN ");
@@ -124,8 +115,7 @@ void menuAntrian(){
 					break;
 	}
 }
-
-void menuWaiting(){
+ void menuWaiting(){
 	int pilihan;
 	
 	gambar(" WAITING LIST ");
@@ -147,8 +137,7 @@ void menuWaiting(){
 					break;
 	}
 }
-
-int tulisan(int menu,int x,int y){
+ int tulisan(int menu,int x,int y){
 	int pilihan;
 	switch(menu){
 		case 1://========== iki kanggo main menu ================
@@ -202,7 +191,7 @@ int tulisan(int menu,int x,int y){
 	return pilihan;
 }
 
-void gotoXY(int x, int y) 
+ void gotoXY(int x, int y) 
 { 
 	CursorPosition.X = x; // Locates column
 	CursorPosition.Y = y; // Locates Row
