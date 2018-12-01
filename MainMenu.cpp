@@ -80,23 +80,23 @@ void menuPegawai(){
 		
 		switch(pilihan){
 			case 1: 
-					tambah_data(&head_sing);
-					break;
+				tambah_data(&head_sing);
+				break;
 			case 2: 
-					edit(&head_sing);
-					break;
-			case 3: 
-					a=a+5;
-					break;
+				edit(&head_sing);
+				break;
+			case 3:
+				a=a+5;
+				break;
 			case 4: 
-					a=a-5;
-					break;
+				a=a-5;
+				break;
 			case 5:
-					hapus(&head_sing);
-					break;
+				hapus(&head_sing);
+				break;
 			case 6: 
-					mainMenu();
-					break;
+				mainMenu();
+				break;
 		}
 	}while(pilihan != 6);
 }
@@ -113,14 +113,14 @@ void menuAntrian(){
 		case 2: break;
 		case 3: break;
 		case 4:
-				mainMenu();
-				break;
+			mainMenu();
+			break;
 		default :
-					system("cls");
-					printf("DATA TIDAK ADA");
-					getch();
-					menuAntrian();
-					break;
+			system("cls");
+			printf("DATA TIDAK ADA");
+			getch();
+			menuAntrian();
+			break;
 	}
 }
 
@@ -136,14 +136,14 @@ void menuWaiting(){
 		case 2: break;
 		case 3: break;
 		case 4:
-				mainMenu();
-				break;
+			mainMenu();
+			break;
 		default :
-					system("cls");
-					printf("DATA TIDAK ADA");
-					getch();
-					menuWaiting();
-					break;
+			system("cls");
+			printf("DATA TIDAK ADA");
+			getch();
+			menuWaiting();
+			break;
 	}
 }
 
