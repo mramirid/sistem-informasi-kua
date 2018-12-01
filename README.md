@@ -1,4 +1,4 @@
-# STUDI_KASUS_KUA
+# STUDI KASUS KUA
 Final Project mata kuliah Struktur Data
 
 Collaborators:
