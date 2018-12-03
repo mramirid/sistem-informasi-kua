@@ -9,7 +9,7 @@ struct node
 {
 	struct node *next, *prev;
 	int nomor_antrian;
-	char casa[100], casi[100], alamat[100], tgl_nikah[100], lengkapdata[10];	/* iki casa casi + lengkapdata gae ngisi apa, nama calon suami-istri kah??? */
+	char casa[100], casi[100], alamat[100], tgl_nikah[100], lengkapdata[10];
 };
 typedef struct node Node;
 
@@ -25,8 +25,10 @@ Queue createQueue();
 bool isEmpty(Queue antrian);
 void enqueue(Queue *antrian);
 void display(Queue antrian);
-/*==============================*/
+void update(Queue antrian);
+int dequeue(Queue *antrian);
 
+/*==============================*/
 int main()
 {
 	Queue antrian = createQueue();
@@ -54,10 +56,13 @@ int main()
 		case 2 :
 				display(antrian);
 				break;
-				// case 4
-				// case 5
-		case 5 :
-				//tambah deque 
+		case 3 : 
+				update(antrian);
+				break;
+		case 4 :
+				dequeue(&antrian);
+				break;
+		case 5 : 
 				exit(1);
 		}
 		getch();
@@ -115,7 +120,6 @@ void enqueue(Queue *antrian)
 		strcpy(new_node -> tgl_nikah, tgl_nikah);
 		strcpy(new_node -> lengkapdata, lengkapdata);
 		new_node->next = NULL;
-
 		if (isEmpty(*antrian))
 		{
 			antrian->front = new_node;
@@ -158,4 +162,80 @@ void display(Queue antrian)
 		}
 	}
 	printf("NULL");
+}
+
+void update(Queue antrian)
+{
+	long long int pos;
+	node *pCur, *pPre, *front=antrian.front;
+	long long int nomor_antrian;
+	char casa[100];
+	char casi[100];
+	char alamat[100];
+	char tgl_nikah[100];
+	char lengkapdata[100];	
+	system("cls");
+	
+	display(antrian);
+	printf("\nCari data yang akan diupdate ( 'Nomor Antrian' ): ");
+	fflush(stdin); 
+	scanf("%lli", &pos);
+	pPre = NULL;
+	pCur = front;
+	while (pCur != NULL && pCur -> nomor_antrian != pos) {
+		pPre = pCur;
+		pCur = pCur -> next;
+	}
+	if (pCur == NULL){
+		printf("\nNomor Antrian tidak ditemukan"); getch();
+	}
+	else{
+		system("cls");
+		printf("===Data yang diUbah===\n");
+		printf("Nomor Antrian\t: "); 
+		scanf("%lli", &nomor_antrian);
+		fflush(stdin);
+		printf("Casa\t: "); 
+		scanf("%[^\n]%*c", &casa);
+		fflush(stdin);
+		printf("Casi\t: "); 
+		scanf("%[^\n]%*c", &casi);
+		fflush(stdin);
+		printf("Alamat\t: "); 
+		scanf("%[^\n]%*c", &alamat);
+		fflush(stdin);
+		printf("Tanggal Nikah\t: "); 
+		scanf("%[^\n]%*c", &tgl_nikah);
+		printf("Lengkap Data\t:");
+		scanf("%[^\n]%*c", &lengkapdata);			
+		pCur->nomor_antrian = nomor_antrian;
+		strcpy(pCur->casa, casa);
+		strcpy(pCur->casi, casi);
+		strcpy(pCur->alamat, alamat);
+		strcpy(pCur->tgl_nikah, tgl_nikah);
+		strcpy(pCur->lengkapdata, lengkapdata);
+		
+		pCur->nomor_antrian = nomor_antrian;
+	}
+}
+	
+int dequeue(Queue *antrian)
+{
+	node *pCur, *next;
+	
+	if (isEmpty(*antrian)){
+		printf("Data masih kosong, silahkan diisi terlebih dahulu!");
+		return 0;
+	}
+	else{
+		printf("Data Antrian Awal Telah Dihapus!!");
+		Node *first_node = antrian->front;
+		antrian->front = first_node->next;
+
+		if (antrian->count == 1)
+			antrian->rear = NULL;
+		free(first_node);
+		antrian->count--;
+		return 1;
+	}
 }
