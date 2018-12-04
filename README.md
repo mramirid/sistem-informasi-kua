@@ -8,9 +8,9 @@ Collaborators:
 <br>Kholilul Rachman N. M.  (17081010055) [Github profile](https://github.com/kholilboy)
 
 ### KETERANGAN
-- Pegawai             ==> Singly Linked-list
-- Pendaftar           ==> Queue
-- Database pendaftar  ==> AVL Tree
+- List pegawai ==> Singly Linked-list
+- Antrian pendaftar ==> Queue
+- Waiting List ==> AVL Tree
 
 ### CMD
 Windows size = 120 x 40
