@@ -23,13 +23,8 @@ static Node_AVL *root = NULL;
 int main(){
 	int y=0;
 	system("cls");
-	root = insert(root,20181112,"aaa","bbb","cccc","20181112");
-	root = insert(root,20181111,"aaa","bbb","cccc","20181111");
-	root = insert(root,20181110,"aaa","bbb","cccc","20181110");
-	root = insert(root,20181114,"aaa","bbb","cccc","20181114");
-	root = insert(root,20181116,"aaa","bbb","cccc","20181116");
-
-	// Sori jar iki kehapus
+	
+	mainMenu();
 
 	return 0;
 }
@@ -151,11 +146,13 @@ void menuAntrian(){
 }
 
 void menuWaiting(){
-	int pilihan,batas=1;
+	int pilihan,batasBawah=1,batasAtas=3,y=0;
 	system("cls");
 	do{
+		y=0;
+		batasAtas=batasBawah+3;
 		gambar(" WAITING LIST ");
-		//inorder(root,batas,1);
+		inorder(root,batasBawah,y,batasAtas);
 		pilihan = tulisan(4,0,3);
 		switch(pilihan){
 			case 1: break;
@@ -166,9 +163,13 @@ void menuWaiting(){
 					root = insert(root,20181112,"aaa","bbb","cccc","20181112");
 					root = insert(root,20181111,"aaa","bbb","cccc","20181111");
 					root = insert(root,20181108,"aaa","bbb","cccc","20181108");
-					//root = insert(root,20181109,"aaa","bbb","cccc","20181109");
-					//root = insert(root,20181116,"aaa","bbb","cccc","20181116");
-					//root = insert(root,20181129,"aaa","bbb","cccc","20181129");
+					root = insert(root,20181109,"aaa","bbb","cccc","20181109");
+					root = insert(root,20181116,"aaa","bbb","cccc","20181116");
+					root = insert(root,20181129,"aaa","bbb","cccc","20181129");
+					break;
+			case 4: batasBawah+=4;
+					break;
+			case 5: batasBawah-=4;
 					break;
 			default :
 					system("cls");
@@ -178,7 +179,7 @@ void menuWaiting(){
 					break;
 		}
 		system("cls");
-	}while(pilihan != 4);
+	}while(pilihan != 2);
 }
 
 int tulisan(int menu,int x,int y){
@@ -227,6 +228,12 @@ int tulisan(int menu,int x,int y){
 				printf("Dibatalkan");
 				gotoXY(x+2,y+=2);
 				printf("2.Back To Menu");
+				gotoXY(x+2,y+=2);
+				printf("3.Tambah(cumn buat nyoba)");
+				gotoXY(x+2,y+=2);
+				printf("4.Next");
+				gotoXY(x+2,y+=2);
+				printf("5.Prev");
 				break;
 	}
 	gotoXY(x+2,y+2);
