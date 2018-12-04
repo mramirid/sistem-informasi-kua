@@ -1,14 +1,22 @@
 #include "header.h"
-#include <stdio.h>
-#include <stdlib.h>
+#include <string.h>
+#include <queue>
 
-Node_AVL* create_node(int value)
+Node_AVL* newNode(int tanggal, const char *casa, const char *casi,
+                 const char *alamat, const char *tgl_nikah)
 {
     Node_AVL *new_node = (Node_AVL*)malloc(sizeof(Node_AVL));
-    new_node->value = value;
+
+    new_node->tanggal = tanggal;
+    strcpy(new_node->casa, casa);
+    strcpy(new_node->casi, casi);
+    strcpy(new_node->alamat, alamat);
+    strcpy(new_node->tgl_nikah, tgl_nikah);
+
     new_node->left = new_node->right = NULL;
     // Sebagai leaf node pada awalnya height bernilai 1
     new_node->height = 1;
+
     return new_node;
 }
 
@@ -71,15 +79,16 @@ Node_AVL* left_rotate(Node_AVL *node)
 }
 
 // Fungsi rekursif untuk insert node
-Node_AVL* insert(Node_AVL *node, int value)
+Node_AVL* insert(Node_AVL *node, int tanggal, const char *casa, const char *casi,
+                 const char *alamat, const char *tgl_nikah)
 {
     // 1. Standard BST insertion
     if (node == NULL)
-        return create_node(value);
-    else if (value < node->value)
-        node->left = insert(node->left, value);
-    else if (value > node->value)
-        node->right = insert(node->right, value);
+        return newNode(tanggal, casa, casi, alamat, tgl_nikah);
+    else if (tanggal < node->tanggal)
+        node->left = insert(node->left, tanggal, casa, casi, alamat, tgl_nikah);
+    else if (tanggal > node->tanggal)
+        node->right = insert(node->right, tanggal, casa, casi, alamat, tgl_nikah);
     else    // Nilai sama tidak diperbolehkan di BST
         return node;
 
@@ -89,23 +98,23 @@ Node_AVL* insert(Node_AVL *node, int value)
     //  3. Cek balance atau tidak
     int balance = get_balance(node);
     // Jika tidak balance, maka akan ada 4 pengecekan...
-    if (balance > 1 && value < node->left->value)
+    if (balance > 1 && tanggal < node->left->tanggal)
     {
         // Left Left Rotation
         return right_rotate(node);
     }
-    else if (balance < -1 && value > node->right->value)
+    else if (balance < -1 && tanggal > node->right->tanggal)
     {
         // Right Right Rotation
         return left_rotate(node);
     }
-    else if (balance > 1 && value > node->left->value)
+    else if (balance > 1 && tanggal > node->left->tanggal)
     {
         // Left Right Rotation
         node->left = left_rotate(node->left);
         return right_rotate(node);
     }
-    else if (balance < -1 && value < node->right->value)
+    else if (balance < -1 && tanggal < node->right->tanggal)
     {
         // Right Left Rotation
         node->right = right_rotate(node->right);
@@ -127,15 +136,15 @@ Node_AVL* min_value_node(Node_AVL *node)
 }
 
 // Fungsi rekursif untuk delete node
-Node_AVL* delete_node(Node_AVL *node, int value)
+Node_AVL* delete_node(Node_AVL *node, int tanggal)
 {
     // 1. Standard BST deletion
     if (node == NULL)
         return node;
-    else if (value < node->value)
-        node->left = delete_node(node->left, value);
-    else if (value > node->value)
-        node->right = delete_node(node->right, value);
+    else if (tanggal < node->tanggal)
+        node->left = delete_node(node->left, tanggal);
+    else if (tanggal > node->tanggal)
+        node->right = delete_node(node->right, tanggal);
     else    // Jika nilai yang dihapus ketemu
     {
         // Jika node ini hanya memiliki 1 child atau tidak sama sekali
@@ -162,9 +171,9 @@ Node_AVL* delete_node(Node_AVL *node, int value)
             // maka cari node terkecil di right subtree
             Node_AVL *temp = min_value_node(node->right);
             // Salin nilai yang telah dicari tadi ke node saat ini
-            node->value = temp->value;
+            node->tanggal = temp->tanggal;
             // Delete the inorder successor
-            node->right = delete_node(node->right, temp->value);
+            node->right = delete_node(node->right, temp->tanggal);
         }
     }
 
@@ -204,22 +213,28 @@ Node_AVL* delete_node(Node_AVL *node, int value)
     return node;
 }
 
-void preorder(Node_AVL *node)
+int inorder(Node_AVL *node,int batasBawah,int &y,int batasAtas)
 {
     if (node != NULL)
     {
-        printf("%d ", node->value);
-        preorder(node->left);
-        preorder(node->right);
+        batasBawah=inorder(node->left, batasBawah,y,batasAtas);
+        //gotoXY(37,y+=batas);
+        if(0 >=batasBawah && batasBawah >= batasAtas*-1){
+            gotoXY(1,y+=2);
+            printf("%d",node->tanggal);
+        }
+        batasBawah=inorder(node->right,batasBawah,y,batasAtas);
     }
+    batasBawah--;
+    return batasBawah;
 }
 
 Node_AVL* destroy_tree(Node_AVL *node)
 {
     while (node != NULL)
     {
-        printf("\nRoot value: %d\n", node->value);
-        node = delete_node(node, node->value);
+        printf("\nRoot tanggal: %d\n", node->tanggal);
+        node = delete_node(node, node->tanggal);
     }
 
     return node;
