@@ -218,14 +218,13 @@ int inorder(Node_AVL *node,int batasBawah,int &y,int batasAtas)
     if (node != NULL)
     {
         batasBawah=inorder(node->left, batasBawah,y,batasAtas);
-        //gotoXY(37,y+=batas);
-        if(0 >=batasBawah && batasBawah >= batasAtas*-1){
-            gotoXY(1,y+=2);
+        batasBawah--;
+        if(0 >=batasBawah && batasBawah > batasAtas*-1){
+            gotoXY(37,y+=2);
             printf("%d",node->tanggal);
         }
         batasBawah=inorder(node->right,batasBawah,y,batasAtas);
     }
-    batasBawah--;
     return batasBawah;
 }
 
