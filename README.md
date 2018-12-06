@@ -12,5 +12,9 @@ Collaborators:
 - Antrian pendaftar ==> Queue
 - Waiting List ==> AVL Tree
 
+### CARA COMPILE + EXECUTE
+- Compile: g++ *.c *.cpp
+- Execute: nama_file (biasane jenenge huruf a tok)
+
 ### CMD
 Windows size = 120 x 40

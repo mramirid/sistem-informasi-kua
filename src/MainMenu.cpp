@@ -24,7 +24,16 @@ int main(){
 	int y=0;
 	system("cls");
 	
-	mainMenu();
+	waiting_list(&root, "A", "B", "Alphabet", "12-10-2022");
+	waiting_list(&root, "C", "D", "Alphabet", "16-10-2022");
+	waiting_list(&root, "E", "F", "Alphabet", "17-10-2022");
+	waiting_list(&root, "G", "H", "Alphabet", "14-10-2022");
+	waiting_list(&root, "I", "J", "Alphabet", "15-10-2022");
+
+	inorder(root);
+	destroy_tree(root);
+
+	// mainMenu();
 
 	return 0;
 }
@@ -52,11 +61,11 @@ void mainMenu(){
 		case 3:menuWaiting();break;
 		case 4:exit(0);break;
 		default :
-					system("cls");
-					printf("DATA TIDAK ADA");
-					getch();
-					mainMenu();
-					break;
+			system("cls");
+			printf("PILIHAN TIDAK ADA");
+			getch();
+			mainMenu();
+			break;
 	}
 }
 
@@ -160,12 +169,11 @@ void menuWaiting(){
 					mainMenu();
 					break;
 			case 3:
-					root = insert(root,20181112,"aaa","bbb","cccc","20181112");
-					root = insert(root,20181111,"aaa","bbb","cccc","20181111");
-					root = insert(root,20181108,"aaa","bbb","cccc","20181108");
-					root = insert(root,20181109,"aaa","bbb","cccc","20181109");
-					root = insert(root,20181116,"aaa","bbb","cccc","20181116");
-					root = insert(root,20181129,"aaa","bbb","cccc","20181129");
+					waiting_list(&root, "A", "B", "Alphabet", "12-10-2022");
+					waiting_list(&root, "C", "D", "Alphabet", "16-10-2022");
+					waiting_list(&root, "E", "F", "Alphabet", "17-10-2022");
+					waiting_list(&root, "G", "H", "Alphabet", "14-10-2022");
+					waiting_list(&root, "I", "J", "Alphabet", "15-10-2022");
 					break;
 			case 4: batasBawah+=4;
 					break;
@@ -186,55 +194,55 @@ int tulisan(int menu,int x,int y){
 	int pilihan;
 	switch(menu){
 		case 1://========== iki kanggo main menu ================
-				gotoXY(x+2,y);
-				printf("1.Menu Pegawai");
-				gotoXY(x+2,y+=2);
-				printf("2.Antrian");
-				gotoXY(x+2,y+=2);
-				printf("3.Waiting List");
-				gotoXY(x+2,y+=2);
-				printf("4.EXIT");
-				break;
+			gotoXY(x+2,y);
+			printf("1.Menu Pegawai");
+			gotoXY(x+2,y+=2);
+			printf("2.Antrian");
+			gotoXY(x+2,y+=2);
+			printf("3.Waiting List");
+			gotoXY(x+2,y+=2);
+			printf("4.EXIT");
+			break;
 		case 2://=========== iki kanggo Menu Pegawai ============
-				gotoXY(x+2,y);
-				printf("1.tambah");
-				gotoXY(x+2,y+=2);
-				printf("2.edit");
-				gotoXY(x+2,y+=2);
-				printf("3.Next");
-				gotoXY(x+2,y+=2);
-				printf("4.Prev");
-				gotoXY(x+2,y+=2);
-				printf("5.hapus");
-				gotoXY(x+2,y+=2);
-				printf("6.Back To Menu");
-				break;
+			gotoXY(x+2,y);
+			printf("1.tambah");
+			gotoXY(x+2,y+=2);
+			printf("2.edit");
+			gotoXY(x+2,y+=2);
+			printf("3.Next");
+			gotoXY(x+2,y+=2);
+			printf("4.Prev");
+			gotoXY(x+2,y+=2);
+			printf("5.hapus");
+			gotoXY(x+2,y+=2);
+			printf("6.Back To Menu");
+			break;
 		case 3://=========== iki kanggo antrian ===============
-				gotoXY(x+2,y);
-				printf("1.Tambah Antrian");
-				gotoXY(x+2,y+=2);
-				printf("2.Proses Antrian");
-				gotoXY(x+2,y+=2);
-				printf("3.Next");
-				gotoXY(x+2,y+=2);
-				printf("4.Prev");
-				gotoXY(x+2,y+=2);
-				printf("5.Back To Menu");
-				break;
+			gotoXY(x+2,y);
+			printf("1.Tambah Antrian");
+			gotoXY(x+2,y+=2);
+			printf("2.Proses Antrian");
+			gotoXY(x+2,y+=2);
+			printf("3.Next");
+			gotoXY(x+2,y+=2);
+			printf("4.Prev");
+			gotoXY(x+2,y+=2);
+			printf("5.Back To Menu");
+			break;
 		case 4://============iki kanggo waiting ===============
-				gotoXY(x+2,y);
-				printf("1.Selesai dilaksanakan /");
-				gotoXY(x+4,y+=1);
-				printf("Dibatalkan");
-				gotoXY(x+2,y+=2);
-				printf("2.Back To Menu");
-				gotoXY(x+2,y+=2);
-				printf("3.Tambah(cumn buat nyoba)");
-				gotoXY(x+2,y+=2);
-				printf("4.Next");
-				gotoXY(x+2,y+=2);
-				printf("5.Prev");
-				break;
+			gotoXY(x+2,y);
+			printf("1.Selesai dilaksanakan /");
+			gotoXY(x+4,y+=1);
+			printf("Dibatalkan");
+			gotoXY(x+2,y+=2);
+			printf("2.Back To Menu");
+			gotoXY(x+2,y+=2);
+			printf("3.Tambah(cumn buat nyoba)");
+			gotoXY(x+2,y+=2);
+			printf("4.Next");
+			gotoXY(x+2,y+=2);
+			printf("5.Prev");
+			break;
 	}
 	gotoXY(x+2,y+2);
 	printf("input pilihan : ");

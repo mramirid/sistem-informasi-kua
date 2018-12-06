@@ -1,6 +1,5 @@
 #include "header.h"
 #include <string.h>
-#include <queue>
 
 Node_AVL* newNode(int tanggal, const char *casa, const char *casi,
                  const char *alamat, const char *tgl_nikah)
@@ -213,7 +212,7 @@ Node_AVL* delete_node(Node_AVL *node, int tanggal)
     return node;
 }
 
-int inorder(Node_AVL *node,int batasBawah,int &y,int batasAtas)
+int inorder(Node_AVL *node, int batasBawah, int &y, int batasAtas)
 {
     if (node != NULL)
     {
@@ -228,6 +227,16 @@ int inorder(Node_AVL *node,int batasBawah,int &y,int batasAtas)
     return batasBawah;
 }
 
+void inorder(Node_AVL *node)
+{
+    if (node != NULL)
+    {
+        inorder(node->left);
+        printf("%u\n", node->tanggal);
+        inorder(node->right);
+    }
+}
+
 Node_AVL* destroy_tree(Node_AVL *node)
 {
     while (node != NULL)
@@ -237,4 +246,76 @@ Node_AVL* destroy_tree(Node_AVL *node)
     }
 
     return node;
+}
+
+unsigned int convert_to_digit(const char number, unsigned int &x)
+{
+	// Untuk convert tiap digit, satuan-puluhan-ratusan-.....
+	unsigned int digit = 0;
+	switch (number)
+    {
+        case '0':
+            digit += x * 0;
+			break;
+        case '1':
+            digit += x * 1;
+			break;
+        case '2':
+            digit += x * 2;
+			break;
+        case '3':
+            digit += x * 3;
+			break;
+        case '4':
+            digit += x * 4;
+			break;
+        case '5':
+            digit += x * 5;
+			break;
+        case '6':
+            digit += x * 6;
+			break;
+        case '7':
+            digit += x * 7;
+			break;
+        case '8':
+            digit += x * 8;
+			break;
+        case '9':
+            digit += x * 9;
+			break;
+        default:
+            break;
+    }
+
+	x *= 10;
+	return digit;
+}
+
+unsigned int str_to_int(const char (&tgl_str)[11])
+{
+	// Convert tiap digit, abaikan karakter '-'
+	// Misal 24-03-1999 dengan indeks urut dari 0
+	unsigned int tgl_int = 0, x = 1;
+	tgl_int += convert_to_digit(tgl_str[1], x);	// 4
+	tgl_int += convert_to_digit(tgl_str[0], x);	// 2
+	tgl_int += convert_to_digit(tgl_str[4], x);	// 3
+	tgl_int += convert_to_digit(tgl_str[3], x);	// 0
+	tgl_int += convert_to_digit(tgl_str[9], x);	// 9
+	tgl_int += convert_to_digit(tgl_str[8], x);	// 9
+	tgl_int += convert_to_digit(tgl_str[7], x);	// 9
+	tgl_int += convert_to_digit(tgl_str[6], x);	// 1
+	
+	return tgl_int;
+}
+
+void waiting_list(Node_AVL **node, const char *casa, const char *casi, 
+                    const char *alamat, const char (&tgl_nikah)[11])
+{
+    // Convert tanggal nikah (char array) ke integer
+    // Format kembalian: TahunBulanTanggal
+    unsigned int tanggal = str_to_int(tgl_nikah);
+
+    // Rangkai ke dalam tree
+    *node = insert(*node, tanggal, casa, casi, alamat, tgl_nikah);
 }
