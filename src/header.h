@@ -30,8 +30,8 @@ struct queue
 // AVL Tree
 struct Node_AVL
 {
-	char casa[100], casi[100], alamat[100], tgl_nikah[100], lengkapdata[10];
-    int tanggal; // FORMAT: 20181204
+	char casa[30], casi[30], alamat[30], tgl_nikah[30], lengkapdata[10];
+    unsigned int tanggal; // FORMAT: 20181204
     int height;
     struct Node_AVL *left, *right;
 };
@@ -61,6 +61,8 @@ Node_AVL* delete_node(Node_AVL *node, int tanggal);
 int inorder(Node_AVL *node, int batasBawah, int &y, int batasAtas);
 Node_AVL* destroy_tree(Node_AVL *node);
 void inorder(Node_AVL *node);
+void waiting_list(Node_AVL **node, const char *casa, const char *casi, 
+                  const char *alamat, const char (&tgl_nikah)[11]);
 
 void gotoXY(int x, int y);
 
