@@ -2,7 +2,7 @@
 #include <string.h>
 
 Node_AVL* newNode(int tanggal, const char *casa, const char *casi,
-                 const char *alamat, const char *tgl_nikah)
+                 const char *alamat, const char *tgl_nikah,const char nik_casa[30],const char nik_casi[30])
 {
     Node_AVL *new_node = (Node_AVL*)malloc(sizeof(Node_AVL));
 
@@ -11,6 +11,8 @@ Node_AVL* newNode(int tanggal, const char *casa, const char *casi,
     strcpy(new_node->casi, casi);
     strcpy(new_node->alamat, alamat);
     strcpy(new_node->tgl_nikah, tgl_nikah);
+    strcpy(new_node->nik_casa,nik_casa);
+    strcpy(new_node->nik_casi,nik_casi);
 
     new_node->left = new_node->right = NULL;
     // Sebagai leaf node pada awalnya height bernilai 1
@@ -79,15 +81,15 @@ Node_AVL* left_rotate(Node_AVL *node)
 
 // Fungsi rekursif untuk insert node
 Node_AVL* insert(Node_AVL *node, int tanggal, const char *casa, const char *casi,
-                 const char *alamat, const char *tgl_nikah)
+                 const char *alamat, const char *tgl_nikah,const char nik_casa[30], const char nik_casi[30])
 {
     // 1. Standard BST insertion
     if (node == NULL)
-        return newNode(tanggal, casa, casi, alamat, tgl_nikah);
+        return newNode(tanggal, casa, casi, alamat, tgl_nikah, nik_casa, nik_casi);
     else if (tanggal < node->tanggal)
-        node->left = insert(node->left, tanggal, casa, casi, alamat, tgl_nikah);
+        node->left = insert(node->left, tanggal, casa, casi, alamat, tgl_nikah, nik_casa, nik_casi);
     else if (tanggal > node->tanggal)
-        node->right = insert(node->right, tanggal, casa, casi, alamat, tgl_nikah);
+        node->right = insert(node->right, tanggal, casa, casi, alamat, tgl_nikah, nik_casa, nik_casi);
     else    // Nilai sama tidak diperbolehkan di BST
         return node;
 
@@ -221,6 +223,8 @@ int inorder(Node_AVL *node, int batasBawah, int &y, int batasAtas)
         if(0 >=batasBawah && batasBawah > batasAtas*-1){
             gotoXY(37,y+=2);
             printf("%d",node->tanggal);
+            gotoXY(37,y+=2);
+            printf("casa : %s",node->casa);
         }
         batasBawah=inorder(node->right,batasBawah,y,batasAtas);
     }
@@ -310,12 +314,12 @@ unsigned int str_to_int(const char (&tgl_str)[11])
 }
 
 void waiting_list(Node_AVL **node, const char *casa, const char *casi, 
-                    const char *alamat, const char (&tgl_nikah)[11])
+                    const char *alamat, const char (&tgl_nikah)[11], const char nik_casa[30],const char nik_casi[30])
 {
     // Convert tanggal nikah (char array) ke integer
     // Format kembalian: TahunBulanTanggal
     unsigned int tanggal = str_to_int(tgl_nikah);
 
     // Rangkai ke dalam tree
-    *node = insert(*node, tanggal, casa, casi, alamat, tgl_nikah);
+    *node = insert(*node, tanggal, casa, casi, alamat, tgl_nikah, nik_casa, nik_casi);
 }
