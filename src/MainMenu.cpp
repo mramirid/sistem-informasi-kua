@@ -67,7 +67,6 @@ void mainMenu(){
 				system("cls");
 				printf("PILIHAN TIDAK ADA");
 				getch();
-				mainMenu();
 				break;
 		}
 	}while(pilihan != 4);
