@@ -22,18 +22,20 @@ bool isEmpty(Queue antrian)
 	return antrian.count == 0 ? true : false;
 }
 
-void enqueue(Queue *antrian)
+int enqueue(Queue *antrian)
 {
-	if (antrian->count == MAX)
+	if (antrian->count == MAX){
 		printf("Maaf, Mas/Mbk pendaftaran sudah penuh!");
+		return 0;	
+	}
 	else
 	{
 		int nomor_antrian;
-		char casa[50];
-		char casi[50];
+		char casa[100];
+		char casi[100];
 		char alamat[100];
-		char tgl_nikah[10];
-		char lengkapdata[5];
+		char tgl_nikah[100];
+		char lengkapdata[10];
 
 		printf("Nomor Antrian :");
 		scanf("%d", &nomor_antrian);
@@ -71,6 +73,7 @@ void enqueue(Queue *antrian)
 		}
 
 		antrian->count++;
+		return 1;
 	}
 }
 
