@@ -40,12 +40,9 @@ int tambah_data(Node_SINGLY **head) {
 	scanf("%d", &(new_node->usia));
 
 	int flag = 1;
-	if (temp != NULL)
-	{
-		while (temp->right != NULL)
-		{
-			if (temp->nip == new_node->nip)
-			{
+	if (temp != NULL) {
+		while (temp->right != NULL) {
+			if (temp->nip == new_node->nip) {
 				flag = 0;
 				break;
 			}
@@ -53,13 +50,11 @@ int tambah_data(Node_SINGLY **head) {
 		}
 	}
 
-	if (flag == 0)
-	{
+	if (flag == 0) {
 		printf("\nNIP yang dimasukkan telah terpakai!");
 		free(new_node);
 	}
-	else
-	{
+	else {
 		Insert(head, temp, new_node);
 		printf("\nData berhasil dimasukan.");
 	}
@@ -102,8 +97,7 @@ void edit(Node_SINGLY **head) {
 
 	if (temp == NULL)
 		printf("\nData tidak ditemukan!");
-	else
-	{
+	else {
 		printf("\nInput data baru untuk NIP %s\n", temp->nip);
 		printf("Nama\t: ");
 		scanf("%s", &(temp->nama));
@@ -128,8 +122,7 @@ int hapus(Node_SINGLY **head) {
 	if (temp == NULL)
 		printf("\nData tidak ditemukan!");
 		return 0;
-	else
-	{
+	else {
 		Delete(head, pre, temp);
 		printf("\nData berhasil dihapus.");
 		return 1;
