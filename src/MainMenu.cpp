@@ -8,9 +8,9 @@ COORD CursorPosition;
 void gotoXY(int x, int y);
 int tulisan(int menu,int x,int y);//tulisan() = menampilkan tulisan pada menu (kode menu, koordinat x awal, koordinat y akhir)
 void mainMenu();
-void menuPegawai();
-void menuAntrian();
-void menuWaiting();
+void menuPegawai(int &jmlhPegawai);
+void menuAntrian(int &jmlhAntrian);
+void menuWaiting(int &jmlhWaiting);
 void gambar(char str[14]);
 
 //kurang antrian dan waiting list
@@ -39,7 +39,7 @@ int main() {
 }
 
 void mainMenu(){
-	int pilihan;
+	int pilihan,jmlhPegawai=0,jmlhAntrian=0,jmlhWaiting=0;
 	do {
 		
 		system("cls");
@@ -60,13 +60,13 @@ void mainMenu(){
 		system("cls");
 		switch(pilihan) {
 			case 1:
-				menuPegawai();
+				menuPegawai(jmlhPegawai);
 				break;
 			case 2:
-				menuAntrian();
+				menuAntrian(jmlhAntrian);
 				break;
 			case 3:
-				menuWaiting();
+				menuWaiting(jmlhWaiting);
 				break;
 			case 4:
 				break;
@@ -91,7 +91,7 @@ void gambar(const char str[12]){
 	printf("%s",str);
 }
 
-void menuPegawai(){
+void menuPegawai(int &jmlhPegawai){
 	int pilihan, a = 1;
 	do {
 		gambar("MENU PEGAWAI");
@@ -102,7 +102,8 @@ void menuPegawai(){
 		system("cls");
 		switch(pilihan){
 			case 1:
-				tambah_data(&head_sing);
+				if(tambah_data(&head_sing))
+				jmlhPegawai++;
 				getch();
 				break;
 			case 2:
@@ -110,20 +111,23 @@ void menuPegawai(){
 				getch();
 				break;
 			case 3:
-				a=a+5;
+				if(a+5 <= jmlhPegawai)
+					a=a+5;
 				break;
 			case 4:
-				a=a-5;
+				if(a-5 > 0)
+					a=a-5;
 				break;
 			case 5:
-				hapus(&head_sing);
+				if(hapus(&head_sing))
+					jmlhPegawai--;
 				getch();
 				break;
 		}
 	} while(pilihan != 6);
 }
 
-void menuAntrian(){
+void menuAntrian(int &jmlhAntrian){
 	int pilihan, batas=1;
 	Node_QUE *hasilProses;
 	do{
@@ -158,7 +162,7 @@ void menuAntrian(){
 	}while(pilihan != 5);
 }
 
-void menuWaiting(){
+void menuWaiting(int &jmlhWaiting){
 	int pilihan,batasBawah=1,batasAtas=3,y=0;
 	do{
 		y=0;
