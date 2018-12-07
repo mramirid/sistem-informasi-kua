@@ -24,7 +24,7 @@ int main() {
 	int y=0;
 	system("cls");
 	
-	//waiting_list(&root, "A", "B", "Alphabet", "12-10-2022");
+	//waiting_list(&root, "A", "B", "Alphabet", "12-10-2022","nik1","nik2");
 	//waiting_list(&root, "C", "D", "Alphabet", "16-10-2022");
 	//waiting_list(&root, "E", "F", "Alphabet", "17-10-2022");
 	//waiting_list(&root, "G", "H", "Alphabet", "14-10-2022");
@@ -129,6 +129,10 @@ void menuPegawai(int &jmlhPegawai) {
 
 void menuAntrian(int &jmlhAntrian) {
 	int pilihan, batas=1;
+	char  casi[30];
+	char nik_casi[30];
+    char alamat[30], tgl_nikah[11];
+	
 	Node_QUE *hasilProses;
 	do {
 		gambar(" MENU ANTRIAN ");
@@ -144,6 +148,18 @@ void menuAntrian(int &jmlhAntrian) {
 				break;
 			case 2:
 				hasilProses=dequeue(&antrian);
+				if(hasilProses != NULL){
+					system("cls");
+					printf("nama casa : %s\n",hasilProses->casa);
+					printf("Input nik casa : %s\n",hasilProses->nik);
+					printf("Input nama casi : ");scanf("%s",&casi);
+					printf("Input nik casi : ");scanf("%s",&nik_casi);
+					printf("Input alamat : ");scanf("%s",&alamat);
+					printf("Input tgl nikah : ");scanf("%s",&tgl_nikah);
+					
+					waiting_list(&root,hasilProses->casa,casi,alamat,tgl_nikah,hasilProses->nik,nik_casi);
+					free(hasilProses);
+				}
 				break;
 			case 3:
 				batas+=3;
@@ -177,11 +193,11 @@ void menuWaiting(int &jmlhWaiting) {
 				//	mainMenu();
 				break;
 			case 3:
-				waiting_list(&root, "A", "B", "Alphabet", "12-10-2022");
-				waiting_list(&root, "C", "D", "Alphabet", "16-10-2022");
-				waiting_list(&root, "E", "F", "Alphabet", "17-10-2022");
-				waiting_list(&root, "G", "H", "Alphabet", "14-10-2022");
-				waiting_list(&root, "I", "J", "Alphabet", "15-10-2022");
+				waiting_list(&root, "A", "B", "Alphabet", "12-10-2022","nik1","nik2");
+				waiting_list(&root, "C", "D", "Alphabet", "16-10-2022","nik1","nik2");
+				waiting_list(&root, "E", "F", "Alphabet", "17-10-2022","nik1","nik2");
+				waiting_list(&root, "G", "H", "Alphabet", "14-10-2022","nik1","nik2");
+				waiting_list(&root, "I", "J", "Alphabet", "15-10-2022","nik1","nik2");
 				break;
 			case 4:
 				batasBawah+=4;
