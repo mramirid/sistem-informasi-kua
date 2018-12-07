@@ -6,7 +6,7 @@ HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 COORD CursorPosition;
 
 void gotoXY(int x, int y);
-int tulisan(int menu,int x,int y);//tulisan() = menampilkan tulisan pada menu (kode menu, koordinat x awal, koordinat y akhir)
+int tulisan(int menu,int x,int y); // tulisan() = menampilkan tulisan pada menu (kode menu, koordinat x awal, koordinat y akhir)
 void mainMenu();
 void menuPegawai(int &jmlhPegawai);
 void menuAntrian(int &jmlhAntrian);
@@ -91,7 +91,7 @@ void gambar(const char str[12]){
 	printf("%s",str);
 }
 
-void menuPegawai(int &jmlhPegawai){
+void menuPegawai(int &jmlhPegawai) {
 	int pilihan, a = 1;
 	do {
 		gambar("MENU PEGAWAI");
@@ -100,9 +100,9 @@ void menuPegawai(int &jmlhPegawai){
 		pilihan = tulisan(2,0,3);
 
 		system("cls");
-		switch(pilihan){
+		switch(pilihan) {
 			case 1:
-				if(tambah_data(&head_sing))
+				if (tambah_data(&head_sing))
 				jmlhPegawai++;
 				getch();
 				break;
@@ -111,15 +111,15 @@ void menuPegawai(int &jmlhPegawai){
 				getch();
 				break;
 			case 3:
-				if(a+5 <= jmlhPegawai)
+				if (a+5 <= jmlhPegawai)
 					a=a+5;
 				break;
 			case 4:
-				if(a-5 > 0)
+				if (a-5 > 0)
 					a=a-5;
 				break;
 			case 5:
-				if(hapus(&head_sing))
+				if (hapus(&head_sing))
 					jmlhPegawai--;
 				getch();
 				break;
@@ -127,30 +127,30 @@ void menuPegawai(int &jmlhPegawai){
 	} while(pilihan != 6);
 }
 
-void menuAntrian(int &jmlhAntrian){
+void menuAntrian(int &jmlhAntrian) {
 	int pilihan, batas=1;
 	Node_QUE *hasilProses;
-	do{
-
+	do {
 		gambar(" MENU ANTRIAN ");
 		display(antrian,batas);
 
-		pilihan = tulisan(3,0,3);
+		pilihan = tulisan(3, 0, 3);
 
 		system("cls");
-		switch(pilihan){
+		switch (pilihan) {
 			case 1:
-					enqueue(&antrian);
-					break;
+				enqueue(&antrian);
+				getch();
+				break;
 			case 2:
-					hasilProses=dequeue(&antrian);
-					break;
+				hasilProses=dequeue(&antrian);
+				break;
 			case 3:
-					batas+=3;
-					break;
+				batas+=3;
+				break;
 			case 4:
-					batas-=3;
-					break;
+				batas-=3;
+				break;
 			default :
 				system("cls");
 				printf("DATA TIDAK ADA");
@@ -159,46 +159,49 @@ void menuAntrian(int &jmlhAntrian){
 				break;
 		}
 		system("cls");
-	}while(pilihan != 5);
+	} while(pilihan != 5);
 }
 
-void menuWaiting(int &jmlhWaiting){
-	int pilihan,batasBawah=1,batasAtas=3,y=0;
-	do{
-		y=0;
-		batasAtas=batasBawah+3;
+void menuWaiting(int &jmlhWaiting) {
+	int pilihan, batasBawah=1, batasAtas=3, y;
+	do {
+		y = 0;
+		batasAtas = batasBawah + 3;
 		gambar(" WAITING LIST ");
-		inorder(root,batasBawah,y,batasAtas);
-		pilihan = tulisan(4,0,3);
-		switch(pilihan){
-			case 1: break;
+		inorder(root, batasBawah, y, batasAtas);
+		pilihan = tulisan(4, 0, 3);
+		switch (pilihan) {
+			case 1:
+				break;
 			case 2:
 				//	mainMenu();
-					break;
+				break;
 			case 3:
-					waiting_list(&root, "A", "B", "Alphabet", "12-10-2022");
-					waiting_list(&root, "C", "D", "Alphabet", "16-10-2022");
-					waiting_list(&root, "E", "F", "Alphabet", "17-10-2022");
-					waiting_list(&root, "G", "H", "Alphabet", "14-10-2022");
-					waiting_list(&root, "I", "J", "Alphabet", "15-10-2022");
-					break;
-			case 4: batasBawah+=4;
-					break;
-			case 5: batasBawah-=4;
-					break;
+				waiting_list(&root, "A", "B", "Alphabet", "12-10-2022");
+				waiting_list(&root, "C", "D", "Alphabet", "16-10-2022");
+				waiting_list(&root, "E", "F", "Alphabet", "17-10-2022");
+				waiting_list(&root, "G", "H", "Alphabet", "14-10-2022");
+				waiting_list(&root, "I", "J", "Alphabet", "15-10-2022");
+				break;
+			case 4:
+				batasBawah+=4;
+				break;
+			case 5:
+				batasBawah-=4;
+				break;
 			default :
-					system("cls");
-					printf("DATA TIDAK ADA");
-					getch();
-					break;
+				system("cls");
+				printf("DATA TIDAK ADA");
+				getch();
+				break;
 		}
 		system("cls");
-	}while(pilihan != 2);
+	} while (pilihan != 2);
 }
 
-int tulisan(int menu,int x,int y){
+int tulisan(int menu, int x, int y) {
 	int pilihan;
-	switch(menu){
+	switch (menu) {
 		case 1://========== iki kanggo main menu ================
 			gotoXY(x+2,y);
 			printf("1.Menu Pegawai");
@@ -250,9 +253,9 @@ int tulisan(int menu,int x,int y){
 			printf("5.Prev");
 			break;
 	}
-	gotoXY(x+2,y+2);
+	gotoXY(x+2, y+2);
 	printf("input pilihan : ");
-	scanf("%d",&pilihan);
+	scanf("%d", &pilihan);
 	return pilihan;
 }
 
@@ -260,5 +263,5 @@ void gotoXY(int x, int y)
 {
 	CursorPosition.X = x; // Locates column
 	CursorPosition.Y = y; // Locates Row
-	SetConsoleCursorPosition(console,CursorPosition); // Sets position for next thing to be printed
+	SetConsoleCursorPosition(console, CursorPosition); // Sets position for next thing to be printed
 }
