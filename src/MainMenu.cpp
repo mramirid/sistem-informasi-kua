@@ -20,7 +20,7 @@ static Node_SINGLY* head_sing=NULL;
 static Queue antrian = createQueue();
 static Node_AVL *root = NULL;
 
-int main(){
+int main() {
 	int y=0;
 	system("cls");
 	
@@ -33,49 +33,54 @@ int main(){
 	//inorder(root);
 	//destroy_tree(root);
 
-	 mainMenu();
+	mainMenu();
 
 	return 0;
 }
 
 void mainMenu(){
-	int pilihan,x,y;
-	do{
+	int pilihan;
+	do {
 		
 		system("cls");
-		for(y=0; y<20; y++){
-			for(x=48; x<73; x++){
-				if((x==48 || x==72) || (y==0 || y==19)){
-					gotoXY(x,y);
-					printf("%c",219);
+		for(int y=0; y<20; y++) {
+			for(int x=48; x<73; x++) {
+				if((x == 48 || x == 72) || (y == 0 || y == 19)) {
+					gotoXY(x, y);
+					printf("%c", 219);
 				}
 			}
 		}
 		
-		gotoXY(55,0);
+		gotoXY(55, 0);
 		printf(" MAIN MENU ");
-	
-		pilihan=tulisan(1,50,2);
+
+		pilihan = tulisan(1, 50, 2);
 	
 		system("cls");
-		switch(pilihan){
-			case 1:menuPegawai();break;
-			case 2:menuAntrian();break;
-			case 3:menuWaiting();break;
-			case 4:exit(0);break;
-			default :
-				system("cls");
+		switch(pilihan) {
+			case 1:
+				menuPegawai();
+				break;
+			case 2:
+				menuAntrian();
+				break;
+			case 3:
+				menuWaiting();
+				break;
+			case 4:
+				break;
+			default:
 				printf("PILIHAN TIDAK ADA");
 				getch();
-				break;
 		}
-	}while(pilihan != 4);
+	} while(pilihan != 4);
 }
 
 void gambar(const char str[12]){
-	int x,y;
-	for(y=0; y<30; y++){
-		for(x=0; x<120; x++){
+	system("cls");
+	for(int y=0; y<30; y++){
+		for(int x=0; x<120; x++){
 			if((x==0 || x==119 || x==30 || x==31) || (y==0 || y==29)){
 				gotoXY(x,y);
 				printf("%c",219);
@@ -87,21 +92,22 @@ void gambar(const char str[12]){
 }
 
 void menuPegawai(){
-	int pilihan,a=1;
-	do{
-		system("cls");
+	int pilihan, a = 1;
+	do {
 		gambar("MENU PEGAWAI");
-		cetak(head_sing,a);
+		cetak(head_sing, a);
 
 		pilihan = tulisan(2,0,3);
-		system("cls");
 
+		system("cls");
 		switch(pilihan){
 			case 1:
 				tambah_data(&head_sing);
+				getch();
 				break;
 			case 2:
 				edit(&head_sing);
+				getch();
 				break;
 			case 3:
 				a=a+5;
@@ -111,9 +117,10 @@ void menuPegawai(){
 				break;
 			case 5:
 				hapus(&head_sing);
+				getch();
 				break;
 		}
-	}while(pilihan != 6);
+	} while(pilihan != 6);
 }
 
 void menuAntrian(){
@@ -153,7 +160,6 @@ void menuAntrian(){
 
 void menuWaiting(){
 	int pilihan,batasBawah=1,batasAtas=3,y=0;
-	system("cls");
 	do{
 		y=0;
 		batasAtas=batasBawah+3;
