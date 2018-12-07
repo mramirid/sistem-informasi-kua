@@ -95,7 +95,7 @@ Node_QUE* dequeue(Queue *antrian)
 			antrian->rear = NULL;
 
 		Node_QUE *temp = first_node;
-		free(first_node);
+		//free(first_node);
 		antrian->count--;
 		return temp;
 	}
