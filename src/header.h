@@ -7,7 +7,7 @@
 // Singly Linked-list
 struct Node_SINGLY
 {
-	char nip[20],nama[20];
+	char nip[20], nama[20];
 	int usia;
 	struct Node_SINGLY *right;
 };
@@ -17,12 +17,13 @@ struct Node_QUE
 {
 	struct Node_QUE *next, *prev;
 	int nomor_antrian;
-	char casa[100], casi[100], alamat[100], tgl_nikah[100], lengkapdata[10];
+	char casa[30], casi[30], alamat[30], tgl_nikah[11], lengkapdata[10];
 };
 
 struct queue
 {
 	int count;
+	int urutan;
 	struct Node_QUE *front;
 	struct Node_QUE *rear;
 };
@@ -30,7 +31,7 @@ struct queue
 // AVL Tree
 struct Node_AVL
 {
-	char casa[30], casi[30], alamat[30], tgl_nikah[30], lengkapdata[10];
+	char casa[30], casi[30], alamat[30], tgl_nikah[11];
     unsigned int tanggal; // FORMAT: 20181204
     int height;
     struct Node_AVL *left, *right;
@@ -43,16 +44,16 @@ typedef struct queue Queue;
 typedef struct Node_AVL Node_AVL;
 
 // Functions of SINGLY
-void tambah_data(Node_SINGLY **head);
-void cetak(Node_SINGLY* head,int next);//variabel next, awal data mana yang ditampilkan.
-void edit(Node_SINGLY** head);
-void hapus(Node_SINGLY** head);
+int tambah_data(Node_SINGLY **head);
+void cetak(Node_SINGLY *head, int next); // Variabel next, awal data mana yang ditampilkan.
+void edit(Node_SINGLY **head);
+int hapus(Node_SINGLY **head);
 
 // Functions of QUE
 Queue createQueue();
 void enqueue(Queue *antrian);
 Node_QUE* dequeue(Queue *antrian);
-void display(Queue antrian,int batas);
+void display(Queue antrian, int batas);
 
 // Fuctions of AVL
 Node_AVL* insert(Node_AVL *node, int tanggal, const char *casa, const char *casi,
