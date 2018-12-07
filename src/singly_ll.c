@@ -1,5 +1,6 @@
 #include "header.h"
 #include <string.h>
+#include <stdbool.h>
 
 Node_SINGLY* create_node() {
 	Node_SINGLY *new_node = (Node_SINGLY*)malloc(sizeof(Node_SINGLY));
@@ -26,7 +27,7 @@ void Delete(Node_SINGLY **head, Node_SINGLY *pre, Node_SINGLY *now) {
 	free(now);
 }
 
-void tambah_data(Node_SINGLY **head) {
+int tambah_data(Node_SINGLY **head) {
 	Node_SINGLY* new_node = create_node();
 	Node_SINGLY* temp = *head;
 
@@ -38,12 +39,32 @@ void tambah_data(Node_SINGLY **head) {
 	printf("Usia\t: ");
 	scanf("%d", &(new_node->usia));
 
+	int flag = 1;
 	if (temp != NULL)
+	{
 		while (temp->right != NULL)
+		{
+			if (temp->nip == new_node->nip)
+			{
+				flag = 0;
+				break;
+			}
 			temp=temp->right;
+		}
+	}
 
-	Insert(head, temp, new_node);
-	printf("\nData berhasil dimasukan.");
+	if (flag == 0)
+	{
+		printf("\nNIP yang dimasukkan telah terpakai!");
+		free(new_node);
+	}
+	else
+	{
+		Insert(head, temp, new_node);
+		printf("\nData berhasil dimasukan.");
+	}
+
+	return flag;
 }
 
 void cetak(Node_SINGLY *head, int next) {
@@ -83,17 +104,16 @@ void edit(Node_SINGLY **head) {
 		printf("\nData tidak ditemukan!");
 	else
 	{
+		printf("\nInput data baru untuk NIP %s\n", temp->nip);
 		printf("Nama\t: ");
 		scanf("%s", &(temp->nama));
-		printf("NIP\t: ");
-		scanf("%s", &(temp->nip));
 		printf("Usia\t: ");
 		scanf("%d", &(temp->usia));
 		printf("\nData berhasil disunting.");
 	}
 }
 
-void hapus(Node_SINGLY **head) {
+int hapus(Node_SINGLY **head) {
 	char nip[20];
 	Node_SINGLY* temp = *head, *pre = NULL;
 
@@ -107,9 +127,11 @@ void hapus(Node_SINGLY **head) {
 
 	if (temp == NULL)
 		printf("\nData tidak ditemukan!");
+		return 0;
 	else
 	{
 		Delete(head, pre, temp);
 		printf("\nData berhasil dihapus.");
+		return 1;
 	}
 }
