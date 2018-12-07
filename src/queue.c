@@ -29,11 +29,11 @@ void enqueue(Queue *antrian)
 	else
 	{
 		int nomor_antrian;
-		char casa[100];
-		char casi[100];
+		char casa[50];
+		char casi[50];
 		char alamat[100];
-		char tgl_nikah[100];
-		char lengkapdata[10];
+		char tgl_nikah[10];
+		char lengkapdata[5];
 
 		printf("Nomor Antrian :");
 		scanf("%d", &nomor_antrian);
