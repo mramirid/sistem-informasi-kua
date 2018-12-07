@@ -17,7 +17,7 @@ struct Node_QUE
 {
 	struct Node_QUE *next, *prev;
 	int nomor_antrian;
-	char casa[30], casi[30], alamat[30], tgl_nikah[11], lengkapdata[10];
+	char casa[30], nik[30];
 };
 
 struct queue
@@ -51,7 +51,7 @@ int hapus(Node_SINGLY **head);
 
 // Functions of QUE
 Queue createQueue();
-void enqueue(Queue *antrian);
+int enqueue(Queue *antrian);
 Node_QUE* dequeue(Queue *antrian);
 void display(Queue antrian, int batas);
 
