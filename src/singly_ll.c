@@ -1,94 +1,115 @@
 #include "header.h"
 #include <string.h>
 
-Node_SINGLY* create_node(){
+Node_SINGLY* create_node() {
 	Node_SINGLY *new_node = (Node_SINGLY*)malloc(sizeof(Node_SINGLY));
 	return new_node;
 }
 
-void Insert(Node_SINGLY** head, Node_SINGLY* now, Node_SINGLY* new_node){
-	if(now == NULL){
+void Insert(Node_SINGLY **head, Node_SINGLY *now, Node_SINGLY *new_node) {
+	if (now == NULL) {
 		new_node->right=*head;
 		*head=new_node;
 	}
-	else{
-		new_node->right=now->right;
-		now->right=new_node;
+	else {
+		new_node->right = now->right;
+		now->right = new_node;
 	}
 }
 
-void Delete(Node_SINGLY** head,Node_SINGLY* pre, Node_SINGLY* now){
-	if(pre==NULL)
-		*head=now->right;
+void Delete(Node_SINGLY **head, Node_SINGLY *pre, Node_SINGLY *now) {
+	if (pre == NULL)
+		*head = now->right;
 	else
-		pre->right=now->right;
+		pre->right = now->right;
+
 	free(now);
 }
 
-void tambah_data(Node_SINGLY **head){
+void tambah_data(Node_SINGLY **head) {
 	Node_SINGLY* new_node = create_node();
-	Node_SINGLY* temp=*head;
+	Node_SINGLY* temp = *head;
 
-	printf("nama : ");scanf("%s",&(new_node->nama));
-	printf("nip : ");scanf("%s",&(new_node->nip));
-	printf("usia : ");scanf("%d",&(new_node->usia));
+	fflush(stdin);
+	printf("\nNama\t: ");
+	scanf("%[^\n]%*c", &(new_node->nama));
+	printf("NIP\t: ");
+	scanf("%s", &(new_node->nip));
+	printf("Usia\t: ");
+	scanf("%d", &(new_node->usia));
 
-	if(temp != NULL)
-		while(temp->right != NULL)
+	if (temp != NULL)
+		while (temp->right != NULL)
 			temp=temp->right;
 
-	Insert(head,temp,new_node);
+	Insert(head, temp, new_node);
+	printf("\nData berhasil dimasukan.");
 }
 
-void cetak(Node_SINGLY* head,int next){
-	Node_SINGLY* temp=head;
-	int a,x=34,y=0;
+void cetak(Node_SINGLY *head, int next) {
+	Node_SINGLY* temp = head;
+	int a, x = 34, y = 0;
 
-	if(temp != NULL){
-		for(a=next;a>1;a--)
-			temp=temp->right;
-		while(temp != NULL && a <= 5){
-			gotoXY(x,y=y+2);
-			printf("nama : %s\n",temp->nama);
-			gotoXY(x,++y);
-			printf("nip : %s\n",temp->nip);
-			gotoXY(x,++y);
-			printf("usia : %d\n",temp->usia);
-			temp=temp->right;
+	if (temp != NULL) {
+		for (a=next; a>1; a--)
+			temp = temp->right;
+		while (temp != NULL && a <= 5) {
+			gotoXY(x, y += 2);
+			printf("Nama\t: %s\n", temp->nama);
+			gotoXY(x, ++y);
+			printf("NIP\t: %s\n", temp->nip);
+			gotoXY(x, ++y);
+			printf("Usia\t: %d\n", temp->usia);
+			temp = temp->right;
 			a++;
 		}
 	}
-	else{
-		gotoXY(x,y=y+2);
+	else {
+		gotoXY(x, y += 2);
 		printf("DATA KOSONG");
 	}
 }
 
-void edit(Node_SINGLY** head){
-	char nip[sizeof((*head)->nip)];
-	Node_SINGLY* temp=*head;
+void edit(Node_SINGLY **head) {
+	char nip[20];
+	Node_SINGLY *temp = *head;
 
-	printf("input nip data yang ingin di-edit : ");scanf("%s",&nip);
- 	while(temp != NULL && strcmp(temp->nip,nip)){
-		temp=temp->right;
+	printf("Input NIP data yang ingin sunting: ");
+	scanf("%s", &nip);
+ 	while (temp != NULL && strcmp(temp->nip, nip))
+		temp = temp->right;
+
+	if (temp == NULL)
+		printf("\nData tidak ditemukan!");
+	else
+	{
+		printf("Nama\t: ");
+		scanf("%s", &(temp->nama));
+		printf("NIP\t: ");
+		scanf("%s", &(temp->nip));
+		printf("Usia\t: ");
+		scanf("%d", &(temp->usia));
+		printf("\nData berhasil disunting.");
 	}
-
-	printf("nama : ");scanf("%s",&(temp->nama));
-	printf("nip : ");scanf("%s",&(temp->nip));
-	printf("usia : ");scanf("%d",&(temp->usia));
-
 }
 
-void hapus(Node_SINGLY** head){
-	char nip[sizeof((*head)->nip)];
-	Node_SINGLY* temp=*head,*pre=NULL;
+void hapus(Node_SINGLY **head) {
+	char nip[20];
+	Node_SINGLY* temp = *head, *pre = NULL;
 
-	printf("input nip data yang ingin di-hapus : ");scanf("%s",&nip);
+	printf("Input NIP data yang ingin dihapus: ");
+	scanf("%s", &nip);
 
-	while(temp != NULL && strcmp(temp->nip,nip)){
-		pre=temp;
-		temp=temp->right;
+	while (temp != NULL && strcmp(temp->nip, nip)) {
+		pre = temp;
+		temp = temp->right;
 	}
 
-	Delete(head,pre,temp);
+	if (temp == NULL)
+		printf("\nData tidak ditemukan!");
+	else
+	{
+		Delete(head, pre, temp);
+		printf("\nData berhasil dihapus.");
+	}
 }
