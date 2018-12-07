@@ -24,49 +24,53 @@ int main(){
 	int y=0;
 	system("cls");
 	
-	waiting_list(&root, "A", "B", "Alphabet", "12-10-2022");
-	waiting_list(&root, "C", "D", "Alphabet", "16-10-2022");
-	waiting_list(&root, "E", "F", "Alphabet", "17-10-2022");
-	waiting_list(&root, "G", "H", "Alphabet", "14-10-2022");
-	waiting_list(&root, "I", "J", "Alphabet", "15-10-2022");
+	//waiting_list(&root, "A", "B", "Alphabet", "12-10-2022");
+	//waiting_list(&root, "C", "D", "Alphabet", "16-10-2022");
+	//waiting_list(&root, "E", "F", "Alphabet", "17-10-2022");
+	//waiting_list(&root, "G", "H", "Alphabet", "14-10-2022");
+	//waiting_list(&root, "I", "J", "Alphabet", "15-10-2022");
 
-	inorder(root);
-	destroy_tree(root);
+	//inorder(root);
+	//destroy_tree(root);
 
-	// mainMenu();
+	 mainMenu();
 
 	return 0;
 }
 
 void mainMenu(){
 	int pilihan,x,y;
-	system("cls");
-	for(y=0; y<20; y++){
-		for(x=48; x<73; x++){
-			if((x==48 || x==72) || (y==0 || y==19)){
-				gotoXY(x,y);
-				printf("%c",219);
+	do{
+		
+		system("cls");
+		for(y=0; y<20; y++){
+			for(x=48; x<73; x++){
+				if((x==48 || x==72) || (y==0 || y==19)){
+					gotoXY(x,y);
+					printf("%c",219);
+				}
 			}
 		}
-	}
-	gotoXY(55,0);
-	printf(" MAIN MENU ");
-
-	pilihan=tulisan(1,50,2);
-
-	system("cls");
-	switch(pilihan){
-		case 1:menuPegawai();break;
-		case 2:menuAntrian();break;
-		case 3:menuWaiting();break;
-		case 4:exit(0);break;
-		default :
-			system("cls");
-			printf("PILIHAN TIDAK ADA");
-			getch();
-			mainMenu();
-			break;
-	}
+		
+		gotoXY(55,0);
+		printf(" MAIN MENU ");
+	
+		pilihan=tulisan(1,50,2);
+	
+		system("cls");
+		switch(pilihan){
+			case 1:menuPegawai();break;
+			case 2:menuAntrian();break;
+			case 3:menuWaiting();break;
+			case 4:exit(0);break;
+			default :
+				system("cls");
+				printf("PILIHAN TIDAK ADA");
+				getch();
+				mainMenu();
+				break;
+		}
+	}while(pilihan != 4);
 }
 
 void gambar(const char str[12]){
@@ -109,9 +113,6 @@ void menuPegawai(){
 			case 5:
 				hapus(&head_sing);
 				break;
-			case 6:
-				mainMenu();
-				break;
 		}
 	}while(pilihan != 6);
 }
@@ -140,18 +141,15 @@ void menuAntrian(){
 			case 4:
 					batas-=3;
 					break;
-			case 5:
-					mainMenu();
-					break;
 			default :
 				system("cls");
 				printf("DATA TIDAK ADA");
 				getch();
-				menuAntrian();
+				//menuAntrian();
 				break;
 		}
 		system("cls");
-	}while(pilihan != 6);
+	}while(pilihan != 5);
 }
 
 void menuWaiting(){
@@ -166,7 +164,7 @@ void menuWaiting(){
 		switch(pilihan){
 			case 1: break;
 			case 2:
-					mainMenu();
+				//	mainMenu();
 					break;
 			case 3:
 					waiting_list(&root, "A", "B", "Alphabet", "12-10-2022");
@@ -183,7 +181,6 @@ void menuWaiting(){
 					system("cls");
 					printf("DATA TIDAK ADA");
 					getch();
-					menuWaiting();
 					break;
 		}
 		system("cls");
