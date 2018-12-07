@@ -5,8 +5,6 @@
 
 #define MAX 50
 
-bool isEmpty(Queue antrian);
-
 Queue createQueue()
 {
 	Queue antrian;
@@ -25,45 +23,36 @@ bool isEmpty(Queue antrian)
 
 int enqueue(Queue *antrian)
 {
-	if (antrian->count == MAX){
-		printf("Maaf, Mas/Mbk pendaftaran sudah penuh!");
-		return 0;	
-	}
+	if (antrian->count == MAX)
+		printf("Maaf, antrian pendaftaran sudah penuh!");
 	else
 	{
 		Node_QUE *new_node = (Node_QUE *)malloc(sizeof(Node_QUE));
 		new_node->next = NULL;
 
-		printf("Nomor Antrian\t: %d", antrian->urutan);
+		printf("Nomor Antrian\t\t: %d\n", antrian->urutan);
 		new_node->nomor_antrian = antrian->urutan++;
 		fflush(stdin);
-		printf("Calon suami\t: ");
+		printf("Pemohon (calon suami)\t: ");
 		scanf("%[^\n]%*c", &(new_node->casa));
-		printf("Calon istri\t: ");
-		scanf("%[^\n]%*c",&(new_node->casi));
-		printf("Alamat\t: ");
-		scanf("%[^\n]%*c", &(new_node->alamat));
-		printf("Tanggal Nikah\t: ");
-		scanf("%s", &(new_node->tgl_nikah));
-		printf("Data Lengkap\t: ");
-		scanf("%s", &(new_node->lengkapdata));
+		printf("NIK Pemohon\t\t: ");
+		scanf("%s",&(new_node->nik));
 
 		if (isEmpty(*antrian))
 		{
 			antrian->front = new_node;
 			antrian->rear = new_node;
-			new_node->prev=NULL;
+			new_node->prev = NULL;
 		}
 		else
 		{
 			antrian->rear->next = new_node;
-			new_node->prev=antrian->rear;
+			new_node->prev = antrian->rear;
 			antrian->rear = new_node;
 		}
 
 		printf("\nData berhasil dimasukan.");
 		antrian->count++;
-		return 1;
 	}
 }
 
@@ -71,28 +60,22 @@ void display(Queue antrian,int batas)
 {
 	int x=34,y=0;
 	Node_QUE *current = antrian.front;
-	if(current != NULL){
+	if (current != NULL) {
 		for(;batas>1;batas--)
 			current=current->next;
-		while (current != NULL && batas <= 3){
+		while (current != NULL && batas <= 3) {
 				gotoXY(x,y+=2);
-				printf("Nomor Antrian : %d", current->nomor_antrian);
+				printf("Nomor antrian\t\t\t: %d", current->nomor_antrian);
 				gotoXY(x,++y);
-				printf("Casa          : %s", current->casa);
+				printf("Nama pemohon (calon suami)\t: %s", current->casa);
 				gotoXY(x,++y);
-				printf("Casi          : %s", current->casi);
-				gotoXY(x,++y);
-				printf("Alamat        : %s", current->alamat);
-				gotoXY(x,++y);
-				printf("Tanggal Nikah : %s", current->tgl_nikah);
-				gotoXY(x,++y);
-				printf("Data Lengkap  : %s", current->lengkapdata);
+				printf("NIK Pemohon\t\t\t: %s", current->nik);
 				current = current->next;
 				batas++;
 		}
 	}
 	else{
-		gotoXY(x,y+=2);
+		gotoXY(x, y += 2);
 		printf("DATA KOSONG");
 	}
 }
@@ -103,7 +86,7 @@ Node_QUE* dequeue(Queue *antrian)
 
 	if (isEmpty(*antrian))
 		return NULL;
-	else{
+	else {
 		printf("Data Antrian Awal Telah Dihapus!!");
 		Node_QUE *first_node = antrian->front;
 		antrian->front = first_node->next;
