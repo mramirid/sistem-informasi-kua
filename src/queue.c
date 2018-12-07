@@ -11,6 +11,7 @@ Queue createQueue()
 {
 	Queue antrian;
 	antrian.count = 0;
+	antrian.urutan = 1;
 	antrian.front = NULL;
 	antrian.rear = NULL;
 
