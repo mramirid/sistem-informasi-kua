@@ -30,35 +30,23 @@ int enqueue(Queue *antrian)
 	}
 	else
 	{
-		int nomor_antrian;
-		char casa[100];
-		char casi[100];
-		char alamat[100];
-		char tgl_nikah[100];
-		char lengkapdata[10];
-
-		printf("Nomor Antrian :");
-		scanf("%d", &nomor_antrian);
-		printf("Casa          :");
-		scanf("%s", &casa);
-		printf("Casi          :");
-		scanf("%s",&casi);
-		printf("Alamat        :");
-		scanf("%s", &alamat);
-		printf("Tanggal Nikah :");
-		scanf("%s", &tgl_nikah);
-		printf("Data Lengkap  :");
-		scanf("%s", &lengkapdata);
-		fflush(stdin);
-
 		Node_QUE *new_node = (Node_QUE *)malloc(sizeof(Node_QUE));
-		new_node -> nomor_antrian = nomor_antrian;
-		strcpy(new_node -> casa, casa);
-		strcpy(new_node -> casi, casi);
-		strcpy(new_node -> alamat, alamat);
-		strcpy(new_node -> tgl_nikah, tgl_nikah);
-		strcpy(new_node -> lengkapdata, lengkapdata);
 		new_node->next = NULL;
+
+		printf("Nomor Antrian\t: %d", antrian->urutan);
+		new_node->nomor_antrian = antrian->urutan++;
+		fflush(stdin);
+		printf("Calon suami\t: ");
+		scanf("%[^\n]%*c", &(new_node->casa));
+		printf("Calon istri\t: ");
+		scanf("%[^\n]%*c",&(new_node->casi));
+		printf("Alamat\t: ");
+		scanf("%[^\n]%*c", &(new_node->alamat));
+		printf("Tanggal Nikah\t: ");
+		scanf("%s", &(new_node->tgl_nikah));
+		printf("Data Lengkap\t: ");
+		scanf("%s", &(new_node->lengkapdata));
+
 		if (isEmpty(*antrian))
 		{
 			antrian->front = new_node;
@@ -72,6 +60,7 @@ int enqueue(Queue *antrian)
 			antrian->rear = new_node;
 		}
 
+		printf("\nData berhasil dimasukan.");
 		antrian->count++;
 		return 1;
 	}
