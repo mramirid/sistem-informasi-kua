@@ -26,7 +26,7 @@ int main() {
 
 	mainMenu();
 
-	destroy_tree(root_avl);
+	destroy_tree(&root_avl);
 	destroy_queue(&antrian);
 	destroy_list(&head_sing);
 
