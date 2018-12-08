@@ -9,7 +9,7 @@ void gotoXY(int x, int y);
 int tulisan(int menu,int x,int y); // tulisan() = menampilkan tulisan pada menu (kode menu, koordinat x awal, koordinat y akhir)
 void mainMenu();
 void menuPegawai(int &jmlhPegawai);
-void menuAntrian(int &jmlhAntrian);
+void menuAntrian(int &jmlhAntrian, int &jmlhWaiting);
 void menuWaiting(int &jmlhWaiting);
 void gambar(const char *str);
 
@@ -57,7 +57,7 @@ void mainMenu() {
 				menuPegawai(jmlhPegawai);
 				break;
 			case 2:
-				menuAntrian(jmlhAntrian);
+				menuAntrian(jmlhAntrian, jmlhWaiting);
 				break;
 			case 3:
 				menuWaiting(jmlhWaiting);
@@ -97,7 +97,7 @@ void menuPegawai(int &jmlhPegawai) {
 		switch(pilihan) {
 			case 1:
 				if (tambah_data(&head_sing))
-				jmlhPegawai++;
+					jmlhPegawai++;
 				getch();
 				break;
 			case 2:
@@ -121,7 +121,7 @@ void menuPegawai(int &jmlhPegawai) {
 	} while (pilihan != 6);
 }
 
-void menuAntrian(int &jmlhAntrian) {
+void menuAntrian(int &jmlhAntrian, int &jmlhWaiting) {
 	int pilihan, batas=1;
 	Node_SINGLY *pegawai = NULL;
 	Node_QUE *hasilProses = NULL;
@@ -169,6 +169,10 @@ void menuAntrian(int &jmlhAntrian) {
 						scanf("%s", &(berkas.tgl_nikah));
 						
 						printf("\nData di atas akan dimasukan ke dalam waiting list.");
+						
+						jmlhAntrian--;
+						jmlhWaiting++;
+						
 						waiting_list(&root_avl, berkas);
 						free(hasilProses);
 					}
@@ -182,10 +186,12 @@ void menuAntrian(int &jmlhAntrian) {
 				getch();
 				break;
 			case 3:
-				batas += 3;
+				if (batas+3 <= jmlhAntrian)
+					batas += 3;
 				break;
 			case 4:
-				batas -= 3;
+				if (batas-3 > 0)
+					batas -= 3;
 				break;
 			case 5:
 				break;
@@ -216,10 +222,12 @@ void menuWaiting(int &jmlhWaiting) {
 			case 3:
 				break;
 			case 4:
-				batasBawah+=4;
+				if (batasBawah+7 <= jmlhWaiting)
+					batasBawah+=4;
 				break;
 			case 5:
-				batasBawah-=4;
+				if (batasBawah > 0 )
+					batasBawah-=4;
 				break;
 			default :
 				system("cls");
