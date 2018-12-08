@@ -206,6 +206,7 @@ void menuAntrian(int &jmlhAntrian, int &jmlhWaiting) {
 
 void menuWaiting(int &jmlhWaiting) {
 	int pilihan, batasBawah=1, batasAtas=3, y;
+	char tanggal[11];
 	do {
 		y = 0;
 		batasAtas = batasBawah + 3;
@@ -214,12 +215,18 @@ void menuWaiting(int &jmlhWaiting) {
 		pilihan = tulisan(4, 0, 3);
 		switch (pilihan) {
 			case 1:
-				// done()
+				done(&root_avl);
+				getch();
 				break;
 			case 2:
 				//	mainMenu();
 				break;
 			case 3:
+				system("cls");
+				printf("tanggal yang ingin di batalkan (format : dd-mm-yyyy) : ");
+				scanf("%s",tanggal);
+				cancel(&root_avl,tanggal);
+				getch();
 				break;
 			case 4:
 				if (batasBawah+7 <= jmlhWaiting)
