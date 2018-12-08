@@ -87,7 +87,6 @@ Node_QUE* dequeue(Queue *antrian)
 	if (isEmpty(*antrian))
 		return NULL;
 	else {
-		printf("Data Antrian Awal Telah Dihapus!!");
 		Node_QUE *first_node = antrian->front;
 		antrian->front = first_node->next;
 
@@ -99,4 +98,12 @@ Node_QUE* dequeue(Queue *antrian)
 		antrian->count--;
 		return temp;
 	}
+}
+
+void destroy_queue(Queue *antrian)
+{
+	Node_QUE *temp = dequeue(antrian);
+
+	while (temp != NULL)
+		temp = dequeue(antrian);
 }
