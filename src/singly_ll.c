@@ -47,17 +47,14 @@ int tambah_data(Node_SINGLY **head)
 	scanf("%d", &(new_node->usia));
 
 	int flag = 1;
-	if (temp != NULL)
+	while (temp != NULL)
 	{
-		while (temp->right != NULL)
+		if ( !strcmp(temp->nip, new_node->nip) )
 		{
-			if (temp->nip == new_node->nip)
-			{
-				flag = 0;
-				break;
-			}
-			temp=temp->right;
+			flag = 0;
+			break;
 		}
+		temp=temp->right;
 	}
 
 	if (flag == 0)
