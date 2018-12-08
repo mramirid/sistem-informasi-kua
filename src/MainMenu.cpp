@@ -11,52 +11,46 @@ void mainMenu();
 void menuPegawai(int &jmlhPegawai);
 void menuAntrian(int &jmlhAntrian);
 void menuWaiting(int &jmlhWaiting);
-void gambar(char str[14]);
+void gambar(const char *str);
 
 //kurang antrian dan waiting list
 //menune menuAntrian
 
-static Node_SINGLY* head_sing=NULL;
+static Node_SINGLY *head_sing = NULL;
 static Queue antrian = createQueue();
-static Node_AVL *root = NULL;
+static Node_AVL *root_avl = NULL;
 
 int main() {
 	int y=0;
 	system("cls");
-	
-	//waiting_list(&root, "A", "B", "Alphabet", "12-10-2022","nik1","nik2");
-	//waiting_list(&root, "C", "D", "Alphabet", "16-10-2022");
-	//waiting_list(&root, "E", "F", "Alphabet", "17-10-2022");
-	//waiting_list(&root, "G", "H", "Alphabet", "14-10-2022");
-	//waiting_list(&root, "I", "J", "Alphabet", "15-10-2022");
-
-	//inorder(root);
-	//destroy_tree(root);
 
 	mainMenu();
+
+	destroy_tree(root_avl);
+	destroy_queue(&antrian);
+	destroy_list(&head_sing);
 
 	return 0;
 }
 
-void mainMenu(){
-	int pilihan,jmlhPegawai=0,jmlhAntrian=0,jmlhWaiting=0;
+void mainMenu() {
+	int pilihan, jmlhPegawai = 0, jmlhAntrian = 0, jmlhWaiting = 0;
 	do {
-		
 		system("cls");
-		for(int y=0; y<20; y++) {
-			for(int x=48; x<73; x++) {
-				if((x == 48 || x == 72) || (y == 0 || y == 19)) {
+		for( int y=0; y<20; y++) {
+			for( int x=48; x<73; x++) {
+				if ((x == 48 || x == 72) || (y == 0 || y == 19)) {
 					gotoXY(x, y);
 					printf("%c", 219);
 				}
 			}
 		}
-		
+
 		gotoXY(55, 0);
 		printf(" MAIN MENU ");
 
 		pilihan = tulisan(1, 50, 2);
-	
+
 		system("cls");
 		switch(pilihan) {
 			case 1:
@@ -77,18 +71,18 @@ void mainMenu(){
 	} while(pilihan != 4);
 }
 
-void gambar(const char str[12]){
+void gambar(const char *str) {
 	system("cls");
-	for(int y=0; y<30; y++){
-		for(int x=0; x<120; x++){
-			if((x==0 || x==119 || x==30 || x==31) || (y==0 || y==29)){
+	for(int y=0; y<30; y++) {
+		for(int x=0; x<120; x++) {
+			if ((x == 0 || x == 119 || x == 30 || x == 31) || (y == 0 || y == 29)) {
 				gotoXY(x,y);
-				printf("%c",219);
+				printf("%c", 219);
 			}
 		}
 	}
-	gotoXY(57,0);
-	printf("%s",str);
+	gotoXY(57, 0);
+	printf("%s", str);
 }
 
 void menuPegawai(int &jmlhPegawai) {
@@ -97,7 +91,7 @@ void menuPegawai(int &jmlhPegawai) {
 		gambar("MENU PEGAWAI");
 		cetak(head_sing, a);
 
-		pilihan = tulisan(2,0,3);
+		pilihan = tulisan(2, 0, 3);
 
 		system("cls");
 		switch(pilihan) {
@@ -124,16 +118,14 @@ void menuPegawai(int &jmlhPegawai) {
 				getch();
 				break;
 		}
-	} while(pilihan != 6);
+	} while (pilihan != 6);
 }
 
 void menuAntrian(int &jmlhAntrian) {
 	int pilihan, batas=1;
-	char  casi[30];
-	char nik_casi[30];
-    char alamat[30], tgl_nikah[11];
-	
-	Node_QUE *hasilProses;
+	Node_SINGLY *pegawai = NULL;
+	Node_QUE *hasilProses = NULL;
+
 	do {
 		gambar(" MENU ANTRIAN ");
 		display(antrian,batas);
@@ -147,34 +139,62 @@ void menuAntrian(int &jmlhAntrian) {
 				getch();
 				break;
 			case 2:
-				hasilProses=dequeue(&antrian);
-				if(hasilProses != NULL){
-					system("cls");
-					printf("nama casa : %s\n",hasilProses->casa);
-					printf("Input nik casa : %s\n",hasilProses->nik);
-					printf("Input nama casi : ");scanf("%s",&casi);
-					printf("Input nik casi : ");scanf("%s",&nik_casi);
-					printf("Input alamat : ");scanf("%s",&alamat);
-					printf("Input tgl nikah : ");scanf("%s",&tgl_nikah);
-					
-					waiting_list(&root,hasilProses->casa,casi,alamat,tgl_nikah,hasilProses->nik,nik_casi);
-					free(hasilProses);
+				pegawai = gunakan_pegawai(&head_sing);
+
+				if (pegawai) {	// Cek apabila pegawai tidak sibuk
+					hasilProses = dequeue(&antrian);
+
+					if (hasilProses) {
+						Data_FIX berkas;
+
+						fflush(stdin);
+						printf("Nama penghulu\t\t: %s\n", pegawai->nama);
+						strcpy(berkas.nama_penghulu, pegawai->nama);
+						printf("NIP penghulu\t\t: %s\n", pegawai->nip);
+						strcpy(berkas.nip_penghulu, pegawai->nip);
+						printf("Nama calon suami\t: %s\n", hasilProses->casa);
+						strcpy(berkas.casa, hasilProses->casa);
+						printf("NIK calon suami\t\t: %s\n", hasilProses->nik);
+						strcpy(berkas.nik_casa, hasilProses->nik);
+						printf("Nama calon istri\t: ");
+						scanf("%[^\n]%*c", &(berkas.casi));
+						printf("NIK calon istri\t\t: ");
+						scanf("%s",&(berkas.nik_casi));
+						printf("Nomor telp\t\t: ");	// Yang bisa dihubungi
+						scanf("%u", &(berkas.no_telp));
+						fflush(stdin);
+						printf("Alamat\t\t\t: ");		// Lokasi pernikahan maksute?
+						scanf("%[^\n]%*c",&(berkas.alamat));
+						printf("Tanggal pernikahan\t: ");
+						scanf("%s", &(berkas.tgl_nikah));
+						
+						printf("\nData di atas akan dimasukan ke dalam waiting list.");
+						waiting_list(&root_avl, berkas);
+						free(hasilProses);
+					}
+					else {
+						printf("Antrian kosong!");
+					}
 				}
+				else {
+					printf("Pegawai sedang sibuk semua.");
+				}
+				getch();
 				break;
 			case 3:
-				batas+=3;
+				batas += 3;
 				break;
 			case 4:
-				batas-=3;
+				batas -= 3;
 				break;
-			default :
-				system("cls");
+			case 5:
+				break;
+			default:
 				printf("DATA TIDAK ADA");
 				getch();
 				//menuAntrian();
 				break;
 		}
-		system("cls");
 	} while(pilihan != 5);
 }
 
@@ -184,20 +204,16 @@ void menuWaiting(int &jmlhWaiting) {
 		y = 0;
 		batasAtas = batasBawah + 3;
 		gambar(" WAITING LIST ");
-		inorder(root, batasBawah, y, batasAtas);
+		inorder(root_avl, batasBawah, y, batasAtas);
 		pilihan = tulisan(4, 0, 3);
 		switch (pilihan) {
 			case 1:
+				// done()
 				break;
 			case 2:
 				//	mainMenu();
 				break;
 			case 3:
-				waiting_list(&root, "A", "B", "Alphabet", "12-10-2022","nik1","nik2");
-				waiting_list(&root, "C", "D", "Alphabet", "16-10-2022","nik1","nik2");
-				waiting_list(&root, "E", "F", "Alphabet", "17-10-2022","nik1","nik2");
-				waiting_list(&root, "G", "H", "Alphabet", "14-10-2022","nik1","nik2");
-				waiting_list(&root, "I", "J", "Alphabet", "15-10-2022","nik1","nik2");
 				break;
 			case 4:
 				batasBawah+=4;
