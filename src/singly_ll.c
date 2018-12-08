@@ -5,6 +5,7 @@
 Node_SINGLY* create_node()
 {
 	Node_SINGLY *new_node = (Node_SINGLY*)malloc(sizeof(Node_SINGLY));
+	new_node->terpakai = 0;
 	return new_node;
 }
 
@@ -85,11 +86,13 @@ void cetak(Node_SINGLY *head, int next)
 		while (temp != NULL && a <= 5)
 		{
 			gotoXY(x, y += 2);
-			printf("Nama\t: %s\n", temp->nama);
+			printf("Nama\t\t: %s", temp->nama);
 			gotoXY(x, ++y);
-			printf("NIP\t: %s\n", temp->nip);
+			printf("NIP\t\t: %s", temp->nip);
 			gotoXY(x, ++y);
-			printf("Usia\t: %d\n", temp->usia);
+			printf("Usia\t\t: %d", temp->usia);
+			gotoXY(x, ++y);
+			printf("Terpakai\t: %d", temp->terpakai);
 			temp = temp->right;
 			a++;
 		}
@@ -117,7 +120,7 @@ void edit(Node_SINGLY **head)
 	{
 		printf("\nInput data baru untuk NIP %s\n", temp->nip);
 		printf("Nama\t: ");
-		scanf("%s", &(temp->nama));
+		scanf("%[^\n]%*c", &(temp->nama));
 		printf("Usia\t: ");
 		scanf("%d", &(temp->usia));
 		printf("\nData berhasil disunting.");
@@ -139,12 +142,51 @@ int hapus(Node_SINGLY **head)
 	}
 
 	if (temp == NULL)
+	{
 		printf("\nData tidak ditemukan!");
 		return 0;
+	}
 	else
 	{
 		Delete(head, pre, temp);
 		printf("\nData berhasil dihapus.");
 		return 1;
+	}
+}
+
+Node_SINGLY* gunakan_pegawai(Node_SINGLY **head)
+{
+	Node_SINGLY *current = *head;
+	while (current != NULL && current->terpakai != 0)
+		current = current->right;
+
+	if (current)
+		current->terpakai = 1;
+	
+	return current;
+}
+
+
+Node_SINGLY* selesai_digunakan(Node_SINGLY **head, char *nip)
+{
+	Node_SINGLY *current = *head;
+	while (current != NULL && strcmp(current->nip, nip))
+		current = current->right;
+
+	if (current)
+		current->terpakai = 0;
+	
+	return current;
+}
+
+void destroy_list(Node_SINGLY **head)
+{
+	Node_SINGLY *current = *head;
+	Node_SINGLY *next_node = NULL;
+	while (current != NULL)
+	{
+		next_node = current->right;
+		free(current);
+		current = *head = next_node;
 	}
 }
