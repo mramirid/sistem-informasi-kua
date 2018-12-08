@@ -78,8 +78,8 @@ int inorder(Node_AVL *node, int batasBawah, int &y, int batasAtas);
 void destroy_tree(Node_AVL **node);
 void inorder(Node_AVL *node);
 void waiting_list(Node_AVL **node, Data_FIX &berkas);
-void done(Node_AVL **node);
-void cancel(Node_AVL **node, char (&tanggal)[11]);
+void done(Node_AVL **node, Node_SINGLY **head);
+void cancel(Node_AVL **node, char (&tanggal)[11], Node_SINGLY **head);
 
 void gotoXY(int x, int y);
 
