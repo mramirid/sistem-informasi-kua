@@ -180,8 +180,9 @@ Node_AVL* delete_node(Node_AVL *node, unsigned int tanggal)
     }
 
     // Jika tree hanya memiliki 1 node
-    if (node == NULL)
-        return node;
+    if (node == NULL){
+    	return node;	
+	}
 
     // 2. Update height node saat ini
     node->height = max(height(node->left), height(node->right)) + 1;
@@ -319,10 +320,30 @@ void waiting_list(Node_AVL **node, Data_FIX &berkas)
     *node = insert(*node, berkas);
 }
 
-/*
-void done(Node_AVL **node, )
-{
-    *node = delete_node(*node, tanggal);
-    selesai_digunakan()
+void done(Node_AVL **node, Node_SINGLY **head){
+	Node_AVL *temp=*node;
+	if( temp != NULL ){
+		temp = min_value_node(temp);
+		selesai_digunakan(head,temp->nip_penghulu);
+		*node = delete_node(temp,temp->tanggal);
+		system("cls");
+		printf("pernikahan telah dilaksanakan");
+	}
 }
-*/
+
+void cancel(Node_AVL **node, char (&tanggal)[11], Node_SINGLY **head){
+	Node_AVL *temp=*node;
+	unsigned int tgl_int = str_to_int(tanggal);
+	if( temp != NULL){
+		if ( temp->tanggal != tgl_int ){
+			cancel( &(temp->left), tanggal, head);
+			cancel( &(temp->right), tanggal, head);
+		}
+		if ( temp->tanggal == tgl_int){
+			selesai_digunakan(head,temp->nip_penghulu);
+			*node = delete_node(temp,temp->tanggal);
+			system("cls");
+			printf("pernikahan telah dibatalkan");
+		}
+	}
+}
