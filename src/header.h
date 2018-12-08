@@ -7,8 +7,8 @@
 // Singly Linked-list
 struct Node_SINGLY
 {
-	char nip[20], nama[20];
-	int usia;
+	char nama[30], nip[30];
+	int terpakai, usia;
 	struct Node_SINGLY *right;
 };
 
@@ -31,10 +31,21 @@ struct queue
 // AVL Tree
 struct Node_AVL
 {
-	char casa[30], casi[30], alamat[30], tgl_nikah[11], nik_casa[30], nik_casi[30];
-    unsigned int tanggal; // FORMAT: 20181204
+	char nama_penghulu[30], nip_penghulu[30];;
+	char casa[30], nik_casa[30], casi[30], nik_casi[30];
+	char alamat[30], tgl_nikah[11];
+    unsigned int tanggal, no_telp;	// PRIMARY KEY | FORMAT TANGGAL: 20181204
     int height;
     struct Node_AVL *left, *right;
+};
+
+// TAK PAKAI INI DARIPADA PASSING BANYAK PARAMETER
+struct Data_FIX
+{
+	char nama_penghulu[30], nip_penghulu[30];
+	char casa[30], nik_casa[30], casi[30], nik_casi[30];
+	char alamat[30], tgl_nikah[11];
+	unsigned int tanggal, no_telp;
 };
 
 // Typedefs
@@ -42,28 +53,32 @@ typedef struct Node_SINGLY Node_SINGLY;
 typedef struct Node_QUE Node_QUE;
 typedef struct queue Queue;
 typedef struct Node_AVL Node_AVL;
+typedef struct Data_FIX Data_FIX;
 
 // Functions of SINGLY
 int tambah_data(Node_SINGLY **head);
 void cetak(Node_SINGLY *head, int next); // Variabel next, awal data mana yang ditampilkan.
 void edit(Node_SINGLY **head);
 int hapus(Node_SINGLY **head);
+Node_SINGLY* gunakan_pegawai(Node_SINGLY **head);
+Node_SINGLY* selesai_digunakan(Node_SINGLY **head, char *nip);
+void destroy_list(Node_SINGLY **head);
 
 // Functions of QUE
 Queue createQueue();
 int enqueue(Queue *antrian);
 Node_QUE* dequeue(Queue *antrian);
 void display(Queue antrian, int batas);
+void destroy_queue(Queue *antrian);
 
 // Fuctions of AVL
-Node_AVL* insert(Node_AVL *node, int tanggal, const char *casa, const char *casi,
-                 const char *alamat, const char *tgl_nikah, const char nik_casa[30],const char nik_casi[30]);
-Node_AVL* delete_node(Node_AVL *node, int tanggal);
+Node_AVL* insert(Node_AVL *node, Data_FIX &berkas);
+Node_AVL* delete_node(Node_AVL *node, unsigned int tanggal);
 int inorder(Node_AVL *node, int batasBawah, int &y, int batasAtas);
 Node_AVL* destroy_tree(Node_AVL *node);
 void inorder(Node_AVL *node);
-void waiting_list(Node_AVL **node, const char *casa, const char *casi, 
-                  const char *alamat, const char (&tgl_nikah)[11],const char nik_casa[30],const char nik_casi[30]);
+void waiting_list(Node_AVL **node, Data_FIX &berkas);
+void done(Node_AVL **node, unsigned int tanggal);
 
 void gotoXY(int x, int y);
 
