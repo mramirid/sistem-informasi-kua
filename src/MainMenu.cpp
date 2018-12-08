@@ -215,7 +215,7 @@ void menuWaiting(int &jmlhWaiting) {
 		pilihan = tulisan(4, 0, 3);
 		switch (pilihan) {
 			case 1:
-				done(&root_avl);
+				done(&root_avl, &head_sing);
 				getch();
 				break;
 			case 2:
@@ -225,7 +225,7 @@ void menuWaiting(int &jmlhWaiting) {
 				system("cls");
 				printf("tanggal yang ingin di batalkan (format : dd-mm-yyyy) : ");
 				scanf("%s",tanggal);
-				cancel(&root_avl,tanggal);
+				cancel(&root_avl, tanggal, &head_sing);
 				getch();
 				break;
 			case 4:
