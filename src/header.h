@@ -75,7 +75,7 @@ void destroy_queue(Queue *antrian);
 Node_AVL* insert(Node_AVL *node, Data_FIX &berkas);
 Node_AVL* delete_node(Node_AVL *node, unsigned int tanggal);
 int inorder(Node_AVL *node, int batasBawah, int &y, int batasAtas);
-Node_AVL* destroy_tree(Node_AVL *node);
+void destroy_tree(Node_AVL **node);
 void inorder(Node_AVL *node);
 void waiting_list(Node_AVL **node, Data_FIX &berkas);
 void done(Node_AVL **node, unsigned int tanggal);
