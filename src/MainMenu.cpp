@@ -9,7 +9,7 @@ void gotoXY(int x, int y);
 int tulisan(int menu,int x,int y); // tulisan() = menampilkan tulisan pada menu (kode menu, koordinat x awal, koordinat y akhir)
 void mainMenu();
 void menuPegawai(int &jmlhPegawai);
-void menuAntrian(int &jmlhAntrian, int &jmlhWaiting);
+void menuAntrian(int &jmlhWaiting);
 void menuWaiting(int &jmlhWaiting);
 void gambar(const char *str);
 
@@ -57,7 +57,7 @@ void mainMenu() {
 				menuPegawai(jmlhPegawai);
 				break;
 			case 2:
-				menuAntrian(jmlhAntrian, jmlhWaiting);
+				menuAntrian(jmlhWaiting);
 				break;
 			case 3:
 				menuWaiting(jmlhWaiting);
@@ -121,7 +121,7 @@ void menuPegawai(int &jmlhPegawai) {
 	} while (pilihan != 6);
 }
 
-void menuAntrian(int &jmlhAntrian, int &jmlhWaiting) {
+void menuAntrian(int &jmlhWaiting) {
 	int pilihan, batas=1;
 	Node_SINGLY *pegawai = NULL;
 	Node_QUE *hasilProses = NULL;
@@ -139,7 +139,8 @@ void menuAntrian(int &jmlhAntrian, int &jmlhWaiting) {
 				getch();
 				break;
 			case 2:
-				pegawai = gunakan_pegawai(&head_sing);
+				if( antrian.count > 0 )
+					pegawai = gunakan_pegawai(&head_sing);
 
 				if (pegawai) {	// Cek apabila pegawai tidak sibuk
 					hasilProses = dequeue(&antrian);
@@ -170,7 +171,6 @@ void menuAntrian(int &jmlhAntrian, int &jmlhWaiting) {
 						
 						printf("\nData di atas akan dimasukan ke dalam waiting list.");
 						
-						jmlhAntrian--;
 						jmlhWaiting++;
 						
 						waiting_list(&root_avl, berkas);
@@ -186,7 +186,7 @@ void menuAntrian(int &jmlhAntrian, int &jmlhWaiting) {
 				getch();
 				break;
 			case 3:
-				if (batas+3 <= jmlhAntrian)
+				if (batas+3 <= antrian.count)
 					batas += 3;
 				break;
 			case 4:
@@ -198,7 +198,6 @@ void menuAntrian(int &jmlhAntrian, int &jmlhWaiting) {
 			default:
 				printf("DATA TIDAK ADA");
 				getch();
-				//menuAntrian();
 				break;
 		}
 	} while(pilihan != 5);
@@ -207,6 +206,7 @@ void menuAntrian(int &jmlhAntrian, int &jmlhWaiting) {
 void menuWaiting(int &jmlhWaiting) {
 	int pilihan, batasBawah=1, batasAtas=3, y;
 	char tanggal[11];
+	Node_AVL *temp=NULL;
 	do {
 		y = 0;
 		batasAtas = batasBawah + 3;
@@ -215,25 +215,39 @@ void menuWaiting(int &jmlhWaiting) {
 		pilihan = tulisan(4, 0, 3);
 		switch (pilihan) {
 			case 1:
-				done(&root_avl, &head_sing);
+				if(root_avl != NULL){
+					temp = min_value_node(root_avl);
+					if( cancel(&root_avl, temp->tgl_nikah, &head_sing) )
+						jmlhWaiting--;	
+				}
+				else{
+					system("cls");
+					printf("Waiting List masih kosong");
+				}
 				getch();
 				break;
 			case 2:
-				//	mainMenu();
 				break;
 			case 3:
-				system("cls");
-				printf("tanggal yang ingin di batalkan (format : dd-mm-yyyy) : ");
-				scanf("%s",tanggal);
-				cancel(&root_avl, tanggal, &head_sing);
+				if(root_avl != NULL){
+					system("cls");
+					printf("tanggal yang ingin di batalkan (format : dd-mm-yyyy) : ");
+					scanf("%s",tanggal);
+					if( cancel(&root_avl, tanggal, &head_sing) )
+						jmlhWaiting--;
+				}
+				else{
+					system("cls");
+					printf("Waiting List masih kosong");
+				}
 				getch();
 				break;
 			case 4:
-				if (batasBawah+7 <= jmlhWaiting)
+				if (batasBawah+4 < jmlhWaiting)
 					batasBawah+=4;
 				break;
 			case 5:
-				if (batasBawah > 0 )
+				if (batasBawah-4 > 0 )
 					batasBawah-=4;
 				break;
 			default :
