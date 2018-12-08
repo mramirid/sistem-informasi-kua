@@ -242,15 +242,10 @@ void inorder(Node_AVL *node)
     }
 }
 
-Node_AVL* destroy_tree(Node_AVL *node)
+void destroy_tree(Node_AVL **node)
 {
-    while (node != NULL)
-    {
-        printf("\nRoot tanggal: %d\n", node->tanggal);
-        node = delete_node(node, node->tanggal);
-    }
-
-    return node;
+    while (*node != NULL)
+        *node = delete_node(*node, (*node)->tanggal);
 }
 
 unsigned int convert_to_digit(const char number, unsigned int &x)
