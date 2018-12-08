@@ -319,31 +319,43 @@ void waiting_list(Node_AVL **node, Data_FIX &berkas)
     // Rangkai ke dalam tree
     *node = insert(*node, berkas);
 }
-
-void done(Node_AVL **node, Node_SINGLY **head){
+/*
+int done(Node_AVL **node, Node_SINGLY **head){
 	Node_AVL *temp=*node;
 	if( temp != NULL ){
 		temp = min_value_node(temp);
 		selesai_digunakan(head,temp->nip_penghulu);
-		*node = delete_node(temp,temp->tanggal);
+		
+		//jika data hanya 1.
+		if(temp == *node)
+			*node=delete_node(temp,temp->tanggal);
+		//jika data lebih dari 1.
+		else
+			delete_node(temp,temp->tanggal);
+		
 		system("cls");
 		printf("pernikahan telah dilaksanakan");
+		return 1;
 	}
+	return 0;
 }
-
-void cancel(Node_AVL **node, char (&tanggal)[11], Node_SINGLY **head){
+*/
+int cancel(Node_AVL **node, char (&tanggal)[11], Node_SINGLY **head){
 	Node_AVL *temp=*node;
+	int flag=0;
 	unsigned int tgl_int = str_to_int(tanggal);
 	if( temp != NULL){
 		if ( temp->tanggal != tgl_int ){
-			cancel( &(temp->left), tanggal, head);
-			cancel( &(temp->right), tanggal, head);
+			flag = cancel( &(temp->left), tanggal, head);
+			flag = cancel( &(temp->right), tanggal, head);
 		}
 		if ( temp->tanggal == tgl_int){
 			selesai_digunakan(head,temp->nip_penghulu);
 			*node = delete_node(temp,temp->tanggal);
 			system("cls");
 			printf("pernikahan telah dibatalkan");
+			flag = 1;
 		}
 	}
+	return flag;
 }
