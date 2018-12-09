@@ -34,7 +34,7 @@ struct Node_AVL
 	char nama_penghulu[30], nip_penghulu[30];
 	char casa[30], nik_casa[30], casi[30], nik_casi[30];
 	char alamat[30], tgl_nikah[11];
-    unsigned int tanggal, no_telp;	// PRIMARY KEY | FORMAT TANGGAL: 20181204
+    unsigned long long nik, no_telp;
     int height;
     struct Node_AVL *left, *right;
 };
@@ -45,7 +45,7 @@ struct Data_FIX
 	char nama_penghulu[30], nip_penghulu[30];
 	char casa[30], nik_casa[30], casi[30], nik_casi[30];
 	char alamat[30], tgl_nikah[11];
-	unsigned int tanggal, no_telp;
+	unsigned long nik, no_telp;
 };
 
 // Typedefs
@@ -73,7 +73,7 @@ void destroy_queue(Queue *antrian);
 
 // Fuctions of AVL
 Node_AVL* insert(Node_AVL *node, Data_FIX berkas);
-Node_AVL* delete_node(Node_AVL *node, unsigned int tanggal);
+Node_AVL* delete_node(Node_AVL *node, unsigned long long nik);
 int inorder(Node_AVL *node, int batasBawah, int *y, int batasAtas);
 void destroy_tree(Node_AVL **node);
 // void inorder(Node_AVL *node);
