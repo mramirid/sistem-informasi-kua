@@ -5,7 +5,7 @@ Node_AVL* newNode(Data_FIX berkas)
 {
     Node_AVL *new_node = (Node_AVL*)malloc(sizeof(Node_AVL));
 
-    new_node->tanggal = berkas.tanggal;
+    new_node->nik = berkas.nik;
     strcpy(new_node->casa, berkas.casa);
     strcpy(new_node->nik_casa, berkas.nik_casa);
     strcpy(new_node->casi, berkas.casi);
@@ -87,9 +87,9 @@ Node_AVL* insert(Node_AVL *node, Data_FIX berkas)
     // 1. Standard BST insertion
     if (node == NULL)
         return newNode(berkas);
-    else if (berkas.tanggal < node->tanggal)
+    else if (berkas.nik < node->nik)
         node->left = insert(node->left, berkas);
-    else if (berkas.tanggal > node->tanggal)
+    else if (berkas.nik > node->nik)
         node->right = insert(node->right, berkas);
     else    // Nilai sama tidak diperbolehkan di BST
         return node;
@@ -100,23 +100,23 @@ Node_AVL* insert(Node_AVL *node, Data_FIX berkas)
     //  3. Cek balance atau tidak
     int balance = get_balance(node);
     // Jika tidak balance, maka akan ada 4 pengecekan...
-    if (balance > 1 && berkas.tanggal < node->left->tanggal)
+    if (balance > 1 && berkas.nik < node->left->nik)
     {
         // Left Left Rotation
         return right_rotate(node);
     }
-    else if (balance < -1 && berkas.tanggal > node->right->tanggal)
+    else if (balance < -1 && berkas.nik > node->right->nik)
     {
         // Right Right Rotation
         return left_rotate(node);
     }
-    else if (balance > 1 && berkas.tanggal > node->left->tanggal)
+    else if (balance > 1 && berkas.nik > node->left->nik)
     {
         // Left Right Rotation
         node->left = left_rotate(node->left);
         return right_rotate(node);
     }
-    else if (balance < -1 && berkas.tanggal < node->right->tanggal)
+    else if (balance < -1 && berkas.nik < node->right->nik)
     {
         // Right Left Rotation
         node->right = right_rotate(node->right);
@@ -138,15 +138,15 @@ Node_AVL* min_value_node(Node_AVL *node)
 }
 
 // Fungsi rekursif untuk delete node
-Node_AVL* delete_node(Node_AVL *node, unsigned int tanggal)
+Node_AVL* delete_node(Node_AVL *node, unsigned long long nik)
 {
     // 1. Standard BST deletion
     if (node == NULL)
         return node;
-    else if (tanggal < node->tanggal)
-        node->left = delete_node(node->left, tanggal);
-    else if (tanggal > node->tanggal)
-        node->right = delete_node(node->right, tanggal);
+    else if (nik < node->nik)
+        node->left = delete_node(node->left, nik);
+    else if (nik > node->nik)
+        node->right = delete_node(node->right, nik);
     else    // Jika nilai yang dihapus ketemu
     {
         // Jika node ini hanya memiliki 1 child atau tidak sama sekali
@@ -173,9 +173,9 @@ Node_AVL* delete_node(Node_AVL *node, unsigned int tanggal)
             // maka cari node terkecil di right subtree
             Node_AVL *temp = min_value_node(node->right);
             // Salin nilai yang telah dicari tadi ke node saat ini
-            node->tanggal = temp->tanggal;
+            node->nik = temp->nik;
             // Delete the inorder successor
-            node->right = delete_node(node->right, temp->tanggal);
+            node->right = delete_node(node->right, temp->nik);
         }
     }
 
@@ -223,7 +223,7 @@ int inorder(Node_AVL *node, int batasBawah, int *y, int batasAtas)
         batasBawah--;
         if (0 >= batasBawah && batasBawah > batasAtas * -1) {
             gotoXY(37, *y += 2);
-            printf("%d",node->tanggal);
+            printf("%llu",node->nik);
             gotoXY(37, *y += 2);
             printf("Calon suami\t: %s",node->casa);
         }
@@ -238,7 +238,7 @@ void inorder(Node_AVL *node)
     if (node != NULL)
     {
         inorder(node->left);
-        printf("%u\n", node->tanggal);
+        printf("%llu\n", node->nik);
         inorder(node->right);
     }
 }
@@ -247,18 +247,15 @@ void inorder(Node_AVL *node)
 void destroy_tree(Node_AVL **node)
 {
     while (*node != NULL)
-        *node = delete_node(*node, (*node)->tanggal);
+        *node = delete_node(*node, (*node)->nik);
 }
 
-unsigned int convert_to_digit(const char number, unsigned int *x)
+unsigned long long convert_to_digit(const char number, unsigned long long *x)
 {
 	// Untuk convert tiap digit, satuan-puluhan-ratusan-.....
-	unsigned int digit = 0;
+	unsigned long long digit = 0;
 	switch (number)
     {
-        case '0':
-            digit += (*x * 0);
-			break;
         case '1':
             digit += (*x * 1);
 			break;
@@ -287,6 +284,7 @@ unsigned int convert_to_digit(const char number, unsigned int *x)
             digit += (*x * 9);
 			break;
         default:
+            // Bukan karakter angka? abaikan.
             break;
     }
 
@@ -294,28 +292,21 @@ unsigned int convert_to_digit(const char number, unsigned int *x)
 	return digit;
 }
 
-unsigned int str_to_int(const char tgl_str[11])
+unsigned long long str_to_int(const char nik_casa[11], int length)
 {
-	// Convert tiap digit, abaikan karakter '-'
-	// Misal 24-03-1999 dengan indeks urut dari 0
-	unsigned int tgl_int = 0, x = 1;
-	tgl_int += convert_to_digit(tgl_str[1], &x);	// 4
-	tgl_int += convert_to_digit(tgl_str[0], &x);	// 2
-	tgl_int += convert_to_digit(tgl_str[4], &x);	// 3
-	tgl_int += convert_to_digit(tgl_str[3], &x);	// 0
-	tgl_int += convert_to_digit(tgl_str[9], &x);	// 9
-	tgl_int += convert_to_digit(tgl_str[8], &x);	// 9
-	tgl_int += convert_to_digit(tgl_str[7], &x);	// 9
-	tgl_int += convert_to_digit(tgl_str[6], &x);	// 1
+	// Misal 17081010051 dengan indeks urut dari 0
+	unsigned long long nik_casa_int = 0, x = 1;
 
-	return tgl_int;
+    for (int i = (length - 1); i >= 0; --i)
+		nik_casa_int += convert_to_digit(nik_casa[i], &x);
+
+	return nik_casa_int;
 }
 
 void waiting_list(Node_AVL **node, Data_FIX berkas)
 {
-    // Convert tanggal nikah (char array) ke integer
-    // Format kembalian: TahunBulanTanggal
-    berkas.tanggal = str_to_int(berkas.tgl_nikah);
+    // Convert nik_casa (char array) ke integer
+    berkas.nik = str_to_int(berkas.nik_casa);
 
     // Rangkai ke dalam tree
     *node = insert(*node, berkas);
@@ -329,10 +320,10 @@ int done(Node_AVL **node, Node_SINGLY **head){
 		
 		//jika data hanya 1.
 		if(temp == *node)
-			*node=delete_node(temp,temp->tanggal);
+			*node=delete_node(temp,temp->nik);
 		//jika data lebih dari 1.
 		else
-			delete_node(temp,temp->tanggal);
+			delete_node(temp,temp->nik);
 		
 		system("cls");
 		printf("pernikahan telah dilaksanakan");
@@ -341,19 +332,19 @@ int done(Node_AVL **node, Node_SINGLY **head){
 	return 0;
 }
 */
-int cancel(Node_AVL **node, char tanggal[11], Node_SINGLY **head) {
+int cancel(Node_AVL **node, char nik_casa[11], Node_SINGLY **head) {
 	Node_AVL *temp = *node;
 	int flag = 0;
-	unsigned int tgl_int = str_to_int(tanggal);
+	unsigned long long nik_casa_int = str_to_int(nik_casa);
 	if (temp != NULL) {
-		if (temp->tanggal != tgl_int) {
-			flag = cancel( &(temp->left), tanggal, head);
-			flag = cancel( &(temp->right), tanggal, head);
+		if (temp->nik != nik_casa_int) {
+			flag = cancel(&(temp->left), nik_casa, head);
+			flag = cancel(&(temp->right), nik_casa, head);
 		}
-		if (temp->tanggal == tgl_int) {
+		if (temp->nik == nik_casa_int) {
 			selesai_digunakan(head, temp->nip_penghulu);
-			*node = delete_node(temp, temp->tanggal);
-			system("CLS");
+			*node = delete_node(temp, temp->nik);
+            system("CLS");
 			printf("Pernikahan telah dibatalkan.");
 			flag = 1;
 		}
