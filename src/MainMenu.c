@@ -6,13 +6,14 @@ Node_SINGLY *head_sing;
 Queue antrian;
 Node_AVL *root_avl;
 
-void gotoXY(int x, int y);
-int tulisan(int menu,int x,int y); // tulisan() = menampilkan tulisan pada menu (kode menu, koordinat x awal, koordinat y akhir)
+// tulisan() = menampilkan tulisan pada menu (kode menu, koordinat x awal, koordinat y akhir)
+int tulisan(int menu, int x, int y);
 void mainMenu();
 void menuPegawai(int *jmlhPegawai);
 void menuAntrian(int *jmlhWaiting);
 void menuWaiting(int *jmlhWaiting);
 void gambar(const char *str);
+void gotoXY(int x, int y);
 
 int main() {
 	head_sing = NULL;
@@ -209,6 +210,7 @@ void menuWaiting(int *jmlhWaiting) {
 	do {
 		y = 0;
 		batasAtas = batasBawah + 2;
+
 		gambar(" WAITING LIST ");
 		if (root_avl == NULL) {
 			gotoXY(35, y + 2);
@@ -233,17 +235,15 @@ void menuWaiting(int *jmlhWaiting) {
 				getch();
 				break;
 			case 2:
+				system("cls");
 				if (root_avl != NULL) {
-					system("cls");
-					printf("nik casa : ");
+					printf("NIK Calon suami: ");
 					scanf("%s",nik_casa);
 					if (cancel(&root_avl, nik_casa, &head_sing, 0))
 						--(*jmlhWaiting);
 				}
-				else {
-					system("cls");
+				else
 					printf("Waiting List masih kosong.");
-				}
 				getch();
 				break;
 			case 3:
@@ -269,7 +269,7 @@ void menuWaiting(int *jmlhWaiting) {
 int tulisan(int menu, int x, int y) {
 	int pilihan;
 	switch (menu) {
-		case 1://========== iki kanggo main menu ================
+		case 1:	//========== iki kanggo main menu ================
 			gotoXY(x + 2, y);
 			printf("1.Menu Pegawai");
 			gotoXY(x + 2, y += 2);
@@ -279,7 +279,7 @@ int tulisan(int menu, int x, int y) {
 			gotoXY(x + 2, y += 2);
 			printf("4.EXIT");
 			break;
-		case 2://=========== iki kanggo Menu Pegawai ============
+		case 2:	//=========== iki kanggo Menu Pegawai ============
 			gotoXY(x + 2, y);
 			printf("1. Tambah data");
 			gotoXY(x + 2, y += 2);
@@ -293,7 +293,7 @@ int tulisan(int menu, int x, int y) {
 			gotoXY(x + 2, y += 2);
 			printf("6. Back to menu");
 			break;
-		case 3://=========== iki kanggo antrian ===============
+		case 3:	//=========== iki kanggo antrian ===============
 			gotoXY(x + 2, y);
 			printf("1. Tambah Antrian");
 			gotoXY(x + 2, y += 2);
@@ -305,7 +305,7 @@ int tulisan(int menu, int x, int y) {
 			gotoXY(x + 2, y += 2);
 			printf("5. Back to menu");
 			break;
-		case 4://============iki kanggo waiting ===============
+		case 4:	//============iki kanggo waiting ===============
 			gotoXY(x + 2, y);
 			printf("1. Selesai dilaksanakan");
 			gotoXY(x + 2, y += 2);

@@ -244,18 +244,6 @@ int inorder(Node_AVL *node, int batasBawah, int *y, int batasAtas)
     return batasBawah;
 }
 
-/*
-void inorder(Node_AVL *node)
-{
-    if (node != NULL)
-    {
-        inorder(node->left);
-        printf("%llu\n", node->nik);
-        inorder(node->right);
-    }
-}
-*/
-
 void destroy_tree(Node_AVL **node)
 {
     while (*node != NULL)
@@ -264,7 +252,6 @@ void destroy_tree(Node_AVL **node)
 
 unsigned long long convert_to_digit(const char number, unsigned long long *x)
 {
-	// Untuk convert tiap digit, satuan-puluhan-ratusan-.....
 	unsigned long long digit = 0;
 	switch (number)
     {
@@ -306,11 +293,9 @@ unsigned long long convert_to_digit(const char number, unsigned long long *x)
 
 unsigned long long str_to_int(const char nik_casa[11])
 {
-	//hitung length
-	int length = sizeof(nik_casa)/sizeof(nik_casa[0]);
-	// Misal 17081010051 dengan indeks urut dari 0
+	int length = sizeof(nik_casa) / sizeof(nik_casa[0]);
 	unsigned long long nik_casa_int = 0, x = 1;
-
+    // Untuk convert tiap digit, satuan-puluhan-ratusan-.....
     for (int i = (length - 1); i >= 0; --i)
 		nik_casa_int += convert_to_digit(nik_casa[i], &x);
 
@@ -325,36 +310,16 @@ void waiting_list(Node_AVL **node, Data_FIX berkas)
     // Rangkai ke dalam tree
     *node = insert(*node, berkas);
 }
-/*
-int done(Node_AVL **node, Node_SINGLY **head){
-	Node_AVL *temp=*node;
-	if( temp != NULL ){
-		temp = min_value_node(temp);
-		selesai_digunakan(head,temp->nip_penghulu);
-		
-		//jika data hanya 1.
-		if(temp == *node)
-			*node=delete_node(temp,temp->nik);
-		//jika data lebih dari 1.
-		else
-			delete_node(temp,temp->nik);
-		
-		system("cls");
-		printf("pernikahan telah dilaksanakan");
-		return 1;
-	}
-	return 0;
-}
-*/
+
 int cancel(Node_AVL **node, char nik_casa[11], Node_SINGLY **head,int flag) {
 	Node_AVL *temp = *node;
-	//int flag = 0;
 	unsigned long long nik_casa_int = str_to_int(nik_casa);
 	if (temp != NULL) {
 		if (temp->nik != nik_casa_int) {
 			flag = cancel(&(temp->left), nik_casa, head, flag);
 			flag = cancel(&(temp->right), nik_casa, head, flag);
 		}
+
 		if (temp->nik == nik_casa_int) {
 			selesai_digunakan(head, temp->nip_penghulu);
 			*node = delete_node(temp, temp->nik);

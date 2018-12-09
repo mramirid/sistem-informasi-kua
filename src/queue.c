@@ -24,7 +24,7 @@ bool isEmpty(Queue antrian)
 int enqueue(Queue *antrian)
 {
 	Node_QUE *temp = antrian->front;
-	int flag=1;
+	int flag = 1;
 	if (antrian->count == MAX)
 		printf("Maaf, antrian pendaftaran sudah penuh!");
 	else
@@ -40,14 +40,16 @@ int enqueue(Queue *antrian)
 		printf("NIK Pemohon\t\t: ");
 		scanf("%s",&(new_node->nik));
 		
-		while (temp != NULL){
-			if ( !(strcmp(temp->nik,new_node->nik)) ){
-				flag=0;
+		// Cek NIK pemohon, apakah sama?
+		while (temp != NULL) {
+			if (!(strcmp(temp->nik, new_node->nik))) {
+				flag = 0;
 				break;
 			}
-			temp=temp->next;
+			temp = temp->next;
 		}
-		if(flag){
+
+		if (flag) {
 			if (isEmpty(*antrian))
 			{
 				antrian->front = new_node;
@@ -64,8 +66,8 @@ int enqueue(Queue *antrian)
 			printf("\nData berhasil dimasukan.");
 			antrian->count++;	
 		}
-		else{
-			printf("NIK tidak boleh sama");
+		else {
+			printf("\nNIK tidak boleh sama!");
 			antrian->urutan--;
 		}
 	}
@@ -109,7 +111,6 @@ Node_QUE* dequeue(Queue *antrian)
 			antrian->rear = NULL;
 
 		Node_QUE *temp = first_node;
-		//free(first_node);
 		antrian->count--;
 		return temp;
 	}
