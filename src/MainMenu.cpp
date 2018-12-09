@@ -190,7 +190,7 @@ void menuAntrian(int &jmlhWaiting) {
 			case 5:
 				break;
 			default:
-				printf("DATA TIDAK ADA");
+				printf("MENU PILIHAN TIDAK ADA");
 				getch();
 				break;
 		}
