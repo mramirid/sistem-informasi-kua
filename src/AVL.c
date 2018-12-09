@@ -353,7 +353,7 @@ int cancel(Node_AVL **node, char tanggal[11], Node_SINGLY **head) {
 		if (temp->tanggal == tgl_int) {
 			selesai_digunakan(head, temp->nip_penghulu);
 			*node = delete_node(temp, temp->tanggal);
-            system("CLS");
+			system("CLS");
 			printf("Pernikahan telah dibatalkan.");
 			flag = 1;
 		}
