@@ -2,8 +2,11 @@
 #include <conio.h>
 #include <windows.h>
 
-HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
-COORD CursorPosition;
+static Node_SINGLY *head_sing = NULL;
+static Queue antrian = createQueue();
+static Node_AVL *root_avl = NULL;
+static HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+static COORD CursorPosition;
 
 void gotoXY(int x, int y);
 int tulisan(int menu,int x,int y); // tulisan() = menampilkan tulisan pada menu (kode menu, koordinat x awal, koordinat y akhir)
@@ -13,22 +16,15 @@ void menuAntrian(int &jmlhWaiting);
 void menuWaiting(int &jmlhWaiting);
 void gambar(const char *str);
 
-//kurang antrian dan waiting list
-//menune menuAntrian
-
-static Node_SINGLY *head_sing = NULL;
-static Queue antrian = createQueue();
-static Node_AVL *root_avl = NULL;
-
 int main() {
 	int y=0;
 	system("cls");
 
 	mainMenu();
 
-	destroy_tree(&root_avl);
-	destroy_queue(&antrian);
 	destroy_list(&head_sing);
+	destroy_queue(&antrian);
+	destroy_tree(&root_avl);
 
 	return 0;
 }
@@ -73,8 +69,8 @@ void mainMenu() {
 
 void gambar(const char *str) {
 	system("cls");
-	for(int y=0; y<30; y++) {
-		for(int x=0; x<120; x++) {
+	for (int y=0; y<30; y++) {
+		for (int x=0; x<120; x++) {
 			if ((x == 0 || x == 119 || x == 30 || x == 31) || (y == 0 || y == 29)) {
 				gotoXY(x,y);
 				printf("%c", 219);
@@ -105,12 +101,12 @@ void menuPegawai(int &jmlhPegawai) {
 				getch();
 				break;
 			case 3:
-				if (a+5 <= jmlhPegawai)
-					a=a+5;
+				if ((a + 5) <= jmlhPegawai)
+					a += 5;
 				break;
 			case 4:
-				if (a-5 > 0)
-					a=a-5;
+				if ((a - 5) > 0)
+					a -= 5;
 				break;
 			case 5:
 				if (hapus(&head_sing))
@@ -122,13 +118,13 @@ void menuPegawai(int &jmlhPegawai) {
 }
 
 void menuAntrian(int &jmlhWaiting) {
-	int pilihan, batas=1;
+	int pilihan, batas = 1;
 	Node_SINGLY *pegawai = NULL;
 	Node_QUE *hasilProses = NULL;
 
 	do {
 		gambar(" MENU ANTRIAN ");
-		display(antrian,batas);
+		display(antrian, batas);
 
 		pilihan = tulisan(3, 0, 3);
 
@@ -139,7 +135,7 @@ void menuAntrian(int &jmlhWaiting) {
 				getch();
 				break;
 			case 2:
-				if( antrian.count > 0 )
+				if (antrian.count > 0)
 					pegawai = gunakan_pegawai(&head_sing);
 
 				if (pegawai) {	// Cek apabila pegawai tidak sibuk
@@ -176,21 +172,19 @@ void menuAntrian(int &jmlhWaiting) {
 						waiting_list(&root_avl, berkas);
 						free(hasilProses);
 					}
-					else {
+					else
 						printf("Antrian kosong!");
-					}
 				}
-				else {
+				else
 					printf("Pegawai sedang sibuk semua.");
-				}
 				getch();
 				break;
 			case 3:
-				if (batas+3 <= antrian.count)
+				if ((batas + 3) <= antrian.count)
 					batas += 3;
 				break;
 			case 4:
-				if (batas-3 > 0)
+				if ((batas - 3) > 0)
 					batas -= 3;
 				break;
 			case 5:
@@ -204,117 +198,123 @@ void menuAntrian(int &jmlhWaiting) {
 }
 
 void menuWaiting(int &jmlhWaiting) {
-	int pilihan, batasBawah=1, batasAtas=3, y;
+	int pilihan, batasBawah = 1, batasAtas = 3, y;
 	char tanggal[11];
-	Node_AVL *temp=NULL;
+	Node_AVL *temp = NULL;
 	do {
 		y = 0;
 		batasAtas = batasBawah + 3;
+		
 		gambar(" WAITING LIST ");
-		inorder(root_avl, batasBawah, y, batasAtas);
+		if (root_avl == NULL) {
+			gotoXY(35, y + 2);
+			printf("DATA KOSONG");
+		}
+		else
+			inorder(root_avl, batasBawah, y, batasAtas);
+
 		pilihan = tulisan(4, 0, 3);
+
 		switch (pilihan) {
 			case 1:
-				if(root_avl != NULL){
+				if (root_avl != NULL) {
 					temp = min_value_node(root_avl);
-					if( cancel(&root_avl, temp->tgl_nikah, &head_sing) )
+					if (cancel(&root_avl, temp->tgl_nikah, &head_sing))
 						jmlhWaiting--;	
 				}
-				else{
+				else {
 					system("cls");
-					printf("Waiting List masih kosong");
+					printf("Waiting List masih kosong.");
 				}
 				getch();
 				break;
 			case 2:
-				break;
-			case 3:
-				if(root_avl != NULL){
+				if (root_avl != NULL) {
 					system("cls");
-					printf("tanggal yang ingin di batalkan (format : dd-mm-yyyy) : ");
+					printf("Tanggal yang ingin dibatalkan (format: dd-mm-yyyy): ");
 					scanf("%s",tanggal);
-					if( cancel(&root_avl, tanggal, &head_sing) )
+					if (cancel(&root_avl, tanggal, &head_sing))
 						jmlhWaiting--;
 				}
-				else{
+				else {
 					system("cls");
-					printf("Waiting List masih kosong");
+					printf("Waiting List masih kosong.");
 				}
 				getch();
 				break;
+			case 3:
+				if ((batasBawah + 4) <= jmlhWaiting)
+					batasBawah += 4;
+				break;
 			case 4:
-				if (batasBawah+4 < jmlhWaiting)
-					batasBawah+=4;
+				if ((batasBawah - 4) > 0 )
+					batasBawah -= 4;
 				break;
 			case 5:
-				if (batasBawah-4 > 0 )
-					batasBawah-=4;
 				break;
 			default :
 				system("cls");
-				printf("DATA TIDAK ADA");
+				printf("PILIHAN TIDAK ADA");
 				getch();
 				break;
 		}
 		system("cls");
-	} while (pilihan != 2);
+	} while (pilihan != 5);
 }
 
 int tulisan(int menu, int x, int y) {
 	int pilihan;
 	switch (menu) {
 		case 1://========== iki kanggo main menu ================
-			gotoXY(x+2,y);
+			gotoXY(x + 2, y);
 			printf("1.Menu Pegawai");
-			gotoXY(x+2,y+=2);
+			gotoXY(x + 2, y += 2);
 			printf("2.Antrian");
-			gotoXY(x+2,y+=2);
+			gotoXY(x + 2, y += 2);
 			printf("3.Waiting List");
-			gotoXY(x+2,y+=2);
+			gotoXY(x + 2, y += 2);
 			printf("4.EXIT");
 			break;
 		case 2://=========== iki kanggo Menu Pegawai ============
-			gotoXY(x+2,y);
-			printf("1.tambah");
-			gotoXY(x+2,y+=2);
-			printf("2.edit");
-			gotoXY(x+2,y+=2);
-			printf("3.Next");
-			gotoXY(x+2,y+=2);
-			printf("4.Prev");
-			gotoXY(x+2,y+=2);
-			printf("5.hapus");
-			gotoXY(x+2,y+=2);
-			printf("6.Back To Menu");
+			gotoXY(x + 2, y);
+			printf("1. Tambah data");
+			gotoXY(x + 2, y += 2);
+			printf("2. Edit data");
+			gotoXY(x + 2, y += 2);
+			printf("3. Next");
+			gotoXY(x + 2, y += 2);
+			printf("4. Prev");
+			gotoXY(x + 2, y += 2);
+			printf("5. Hapus data");
+			gotoXY(x + 2, y += 2);
+			printf("6. Back to menu");
 			break;
 		case 3://=========== iki kanggo antrian ===============
-			gotoXY(x+2,y);
-			printf("1.Tambah Antrian");
-			gotoXY(x+2,y+=2);
-			printf("2.Proses Antrian");
-			gotoXY(x+2,y+=2);
-			printf("3.Next");
-			gotoXY(x+2,y+=2);
-			printf("4.Prev");
-			gotoXY(x+2,y+=2);
-			printf("5.Back To Menu");
+			gotoXY(x + 2, y);
+			printf("1. Tambah Antrian");
+			gotoXY(x + 2, y += 2);
+			printf("2. Proses Antrian");
+			gotoXY(x + 2, y += 2);
+			printf("3. Next");
+			gotoXY(x + 2, y += 2);
+			printf("4. Prev");
+			gotoXY(x + 2, y += 2);
+			printf("5. Back to menu");
 			break;
 		case 4://============iki kanggo waiting ===============
-			gotoXY(x+2,y);
-			printf("1.Selesai dilaksanakan /");
-			gotoXY(x+4,y+=1);
-			printf("Dibatalkan");
-			gotoXY(x+2,y+=2);
-			printf("2.Back To Menu");
-			gotoXY(x+2,y+=2);
-			printf("3.Tambah(cumn buat nyoba)");
-			gotoXY(x+2,y+=2);
-			printf("4.Next");
-			gotoXY(x+2,y+=2);
-			printf("5.Prev");
+			gotoXY(x + 2, y);
+			printf("1. Selesai dilaksanakan");
+			gotoXY(x + 2, y += 2);
+			printf("2. Dibatalkan");
+			gotoXY(x + 2, y += 2);
+			printf("3. Next");
+			gotoXY(x + 2, y += 2);
+			printf("4. Prev");
+			gotoXY(x + 2, y += 2);
+			printf("5. Back to menu");
 			break;
 	}
-	gotoXY(x+2, y+2);
+	gotoXY(x + 2, y + 2);
 	printf("input pilihan : ");
 	scanf("%d", &pilihan);
 	return pilihan;

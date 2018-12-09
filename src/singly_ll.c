@@ -35,8 +35,8 @@ void Delete(Node_SINGLY **head, Node_SINGLY *pre, Node_SINGLY *now)
 
 int tambah_data(Node_SINGLY **head)
 {
-	Node_SINGLY* new_node = create_node();
-	Node_SINGLY* temp = *head;
+	Node_SINGLY *new_node = create_node();
+	Node_SINGLY *temp = *head;
 
 	fflush(stdin);
 	printf("\nNama\t: ");
@@ -49,12 +49,12 @@ int tambah_data(Node_SINGLY **head)
 	int flag = 1;
 	while (temp != NULL)
 	{
-		if ( !strcmp(temp->nip, new_node->nip) )
+		if (!strcmp(temp->nip, new_node->nip))
 		{
 			flag = 0;
 			break;
 		}
-		temp=temp->right;
+		temp = temp->right;
 	}
 
 	if (flag == 0)
@@ -89,7 +89,7 @@ void cetak(Node_SINGLY *head, int next)
 			gotoXY(x, ++y);
 			printf("Usia\t\t: %d", temp->usia);
 			gotoXY(x, ++y);
-			printf("Terpakai\t: %d", temp->terpakai);
+			printf("Terpakai\t: %s", temp->terpakai == 0 ? "TIDAK" : "YA");
 			temp = temp->right;
 			a++;
 		}
@@ -115,12 +115,17 @@ void edit(Node_SINGLY **head)
 		printf("\nData tidak ditemukan!");
 	else
 	{
-		printf("\nInput data baru untuk NIP %s\n", temp->nip);
-		printf("Nama\t: ");
-		scanf("%[^\n]%*c", &(temp->nama));
-		printf("Usia\t: ");
-		scanf("%d", &(temp->usia));
-		printf("\nData berhasil disunting.");
+		if (temp->terpakai)
+			printf("\nPegawai sedang digunakan!");
+		else
+		{
+			printf("\nInput data baru untuk NIP %s\n", temp->nip);
+			printf("Nama\t: ");
+			scanf("%[^\n]%*c", &(temp->nama));
+			printf("Usia\t: ");
+			scanf("%d", &(temp->usia));
+			printf("\nData berhasil disunting.");
+		}
 	}
 }
 
@@ -145,9 +150,17 @@ int hapus(Node_SINGLY **head)
 	}
 	else
 	{
-		Delete(head, pre, temp);
-		printf("\nData berhasil dihapus.");
-		return 1;
+		if (temp->terpakai)
+		{
+			printf("\nPegawai sedang digunakan!");
+			return 0;
+		}
+		else
+		{
+			Delete(head, pre, temp);
+			printf("\nData berhasil dihapus.");
+			return 1;
+		}
 	}
 }
 
@@ -164,7 +177,7 @@ Node_SINGLY* gunakan_pegawai(Node_SINGLY **head)
 }
 
 
-Node_SINGLY* selesai_digunakan(Node_SINGLY **head, char *nip)
+void selesai_digunakan(Node_SINGLY **head, char *nip)
 {
 	Node_SINGLY *current = *head;
 	while (current != NULL && strcmp(current->nip, nip))
@@ -172,8 +185,6 @@ Node_SINGLY* selesai_digunakan(Node_SINGLY **head, char *nip)
 
 	if (current)
 		current->terpakai = 0;
-	
-	return current;
 }
 
 void destroy_list(Node_SINGLY **head)

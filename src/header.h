@@ -31,7 +31,7 @@ struct queue
 // AVL Tree
 struct Node_AVL
 {
-	char nama_penghulu[30], nip_penghulu[30];;
+	char nama_penghulu[30], nip_penghulu[30];
 	char casa[30], nik_casa[30], casi[30], nik_casi[30];
 	char alamat[30], tgl_nikah[11];
     unsigned int tanggal, no_telp;	// PRIMARY KEY | FORMAT TANGGAL: 20181204
@@ -61,7 +61,7 @@ void cetak(Node_SINGLY *head, int next); // Variabel next, awal data mana yang d
 void edit(Node_SINGLY **head);
 int hapus(Node_SINGLY **head);
 Node_SINGLY* gunakan_pegawai(Node_SINGLY **head);
-Node_SINGLY* selesai_digunakan(Node_SINGLY **head, char *nip);
+void selesai_digunakan(Node_SINGLY **head, char *nip);
 void destroy_list(Node_SINGLY **head);
 
 // Functions of QUE
@@ -78,7 +78,7 @@ int inorder(Node_AVL *node, int batasBawah, int &y, int batasAtas);
 void destroy_tree(Node_AVL **node);
 void inorder(Node_AVL *node);
 void waiting_list(Node_AVL **node, Data_FIX &berkas);
-//int done(Node_AVL **node, Node_SINGLY **head);
+// int done(Node_AVL **node, Node_SINGLY **head);
 int cancel(Node_AVL **node, char (&tanggal)[11], Node_SINGLY **head);
 Node_AVL* min_value_node(Node_AVL *node);
 

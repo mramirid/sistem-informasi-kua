@@ -180,9 +180,8 @@ Node_AVL* delete_node(Node_AVL *node, unsigned int tanggal)
     }
 
     // Jika tree hanya memiliki 1 node
-    if (node == NULL){
-    	return node;	
-	}
+    if (node == NULL)
+        return node;
 
     // 2. Update height node saat ini
     node->height = max(height(node->left), height(node->right)) + 1;
@@ -220,15 +219,15 @@ int inorder(Node_AVL *node, int batasBawah, int &y, int batasAtas)
 {
     if (node != NULL)
     {
-        batasBawah=inorder(node->left, batasBawah,y,batasAtas);
+        batasBawah = inorder(node->left, batasBawah,y,batasAtas);
         batasBawah--;
-        if(0 >=batasBawah && batasBawah > batasAtas*-1){
+        if (0 >= batasBawah && batasBawah > batasAtas * -1) {
             gotoXY(37,y+=2);
             printf("%d",node->tanggal);
             gotoXY(37,y+=2);
             printf("Calon suami\t: %s",node->casa);
         }
-        batasBawah=inorder(node->right,batasBawah,y,batasAtas);
+        batasBawah = inorder(node->right, batasBawah, y, batasAtas);
     }
     return batasBawah;
 }
@@ -340,22 +339,23 @@ int done(Node_AVL **node, Node_SINGLY **head){
 	return 0;
 }
 */
-int cancel(Node_AVL **node, char (&tanggal)[11], Node_SINGLY **head){
-	Node_AVL *temp=*node;
-	int flag=0;
+int cancel(Node_AVL **node, char (&tanggal)[11], Node_SINGLY **head) {
+	Node_AVL *temp = *node;
+	int flag = 0;
 	unsigned int tgl_int = str_to_int(tanggal);
-	if( temp != NULL){
-		if ( temp->tanggal != tgl_int ){
+	if (temp != NULL) {
+		if (temp->tanggal != tgl_int) {
 			flag = cancel( &(temp->left), tanggal, head);
 			flag = cancel( &(temp->right), tanggal, head);
 		}
-		if ( temp->tanggal == tgl_int){
-			selesai_digunakan(head,temp->nip_penghulu);
-			*node = delete_node(temp,temp->tanggal);
-			system("cls");
-			printf("pernikahan telah dibatalkan");
+		if (temp->tanggal == tgl_int) {
+			selesai_digunakan(head, temp->nip_penghulu);
+			*node = delete_node(temp, temp->tanggal);
+            system("CLS");
+			printf("\nPernikahan telah dibatalkan.");
 			flag = 1;
 		}
 	}
+    
 	return flag;
 }
