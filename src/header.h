@@ -72,14 +72,14 @@ void display(Queue antrian, int batas);
 void destroy_queue(Queue *antrian);
 
 // Fuctions of AVL
-Node_AVL* insert(Node_AVL *node, Data_FIX &berkas);
+Node_AVL* insert(Node_AVL *node, Data_FIX berkas);
 Node_AVL* delete_node(Node_AVL *node, unsigned int tanggal);
-int inorder(Node_AVL *node, int batasBawah, int &y, int batasAtas);
+int inorder(Node_AVL *node, int batasBawah, int *y, int batasAtas);
 void destroy_tree(Node_AVL **node);
-void inorder(Node_AVL *node);
-void waiting_list(Node_AVL **node, Data_FIX &berkas);
+// void inorder(Node_AVL *node);
+void waiting_list(Node_AVL **node, Data_FIX berkas);
 // int done(Node_AVL **node, Node_SINGLY **head);
-int cancel(Node_AVL **node, char (&tanggal)[11], Node_SINGLY **head);
+int cancel(Node_AVL **node, char tanggal[11], Node_SINGLY **head);
 Node_AVL* min_value_node(Node_AVL *node);
 
 void gotoXY(int x, int y);

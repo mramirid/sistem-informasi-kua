@@ -1,7 +1,7 @@
 #include "header.h"
 #include <string.h>
 
-Node_AVL* newNode(Data_FIX &berkas)
+Node_AVL* newNode(Data_FIX berkas)
 {
     Node_AVL *new_node = (Node_AVL*)malloc(sizeof(Node_AVL));
 
@@ -82,7 +82,7 @@ Node_AVL* left_rotate(Node_AVL *node)
 }
 
 // Fungsi rekursif untuk insert node
-Node_AVL* insert(Node_AVL *node, Data_FIX &berkas)
+Node_AVL* insert(Node_AVL *node, Data_FIX berkas)
 {
     // 1. Standard BST insertion
     if (node == NULL)
@@ -215,16 +215,16 @@ Node_AVL* delete_node(Node_AVL *node, unsigned int tanggal)
     return node;
 }
 
-int inorder(Node_AVL *node, int batasBawah, int &y, int batasAtas)
+int inorder(Node_AVL *node, int batasBawah, int *y, int batasAtas)
 {
     if (node != NULL)
     {
-        batasBawah = inorder(node->left, batasBawah,y,batasAtas);
+        batasBawah = inorder(node->left, batasBawah, y, batasAtas);
         batasBawah--;
         if (0 >= batasBawah && batasBawah > batasAtas * -1) {
-            gotoXY(37,y+=2);
+            gotoXY(37, *y += 2);
             printf("%d",node->tanggal);
-            gotoXY(37,y+=2);
+            gotoXY(37, *y += 2);
             printf("Calon suami\t: %s",node->casa);
         }
         batasBawah = inorder(node->right, batasBawah, y, batasAtas);
@@ -232,6 +232,7 @@ int inorder(Node_AVL *node, int batasBawah, int &y, int batasAtas)
     return batasBawah;
 }
 
+/*
 void inorder(Node_AVL *node)
 {
     if (node != NULL)
@@ -241,6 +242,7 @@ void inorder(Node_AVL *node)
         inorder(node->right);
     }
 }
+*/
 
 void destroy_tree(Node_AVL **node)
 {
@@ -248,68 +250,68 @@ void destroy_tree(Node_AVL **node)
         *node = delete_node(*node, (*node)->tanggal);
 }
 
-unsigned int convert_to_digit(const char number, unsigned int &x)
+unsigned int convert_to_digit(const char number, unsigned int *x)
 {
 	// Untuk convert tiap digit, satuan-puluhan-ratusan-.....
 	unsigned int digit = 0;
 	switch (number)
     {
         case '0':
-            digit += x * 0;
+            digit += (*x * 0);
 			break;
         case '1':
-            digit += x * 1;
+            digit += (*x * 1);
 			break;
         case '2':
-            digit += x * 2;
+            digit += (*x * 2);
 			break;
         case '3':
-            digit += x * 3;
+            digit += (*x * 3);
 			break;
         case '4':
-            digit += x * 4;
+            digit += (*x * 4);
 			break;
         case '5':
-            digit += x * 5;
+            digit += (*x * 5);
 			break;
         case '6':
-            digit += x * 6;
+            digit += (*x * 6);
 			break;
         case '7':
-            digit += x * 7;
+            digit += (*x * 7);
 			break;
         case '8':
-            digit += x * 8;
+            digit += (*x * 8);
 			break;
         case '9':
-            digit += x * 9;
+            digit += (*x * 9);
 			break;
         default:
             break;
     }
 
-	x *= 10;
+	*x *= 10;
 	return digit;
 }
 
-unsigned int str_to_int(const char (&tgl_str)[11])
+unsigned int str_to_int(const char tgl_str[11])
 {
 	// Convert tiap digit, abaikan karakter '-'
 	// Misal 24-03-1999 dengan indeks urut dari 0
 	unsigned int tgl_int = 0, x = 1;
-	tgl_int += convert_to_digit(tgl_str[1], x);	// 4
-	tgl_int += convert_to_digit(tgl_str[0], x);	// 2
-	tgl_int += convert_to_digit(tgl_str[4], x);	// 3
-	tgl_int += convert_to_digit(tgl_str[3], x);	// 0
-	tgl_int += convert_to_digit(tgl_str[9], x);	// 9
-	tgl_int += convert_to_digit(tgl_str[8], x);	// 9
-	tgl_int += convert_to_digit(tgl_str[7], x);	// 9
-	tgl_int += convert_to_digit(tgl_str[6], x);	// 1
+	tgl_int += convert_to_digit(tgl_str[1], &x);	// 4
+	tgl_int += convert_to_digit(tgl_str[0], &x);	// 2
+	tgl_int += convert_to_digit(tgl_str[4], &x);	// 3
+	tgl_int += convert_to_digit(tgl_str[3], &x);	// 0
+	tgl_int += convert_to_digit(tgl_str[9], &x);	// 9
+	tgl_int += convert_to_digit(tgl_str[8], &x);	// 9
+	tgl_int += convert_to_digit(tgl_str[7], &x);	// 9
+	tgl_int += convert_to_digit(tgl_str[6], &x);	// 1
 
 	return tgl_int;
 }
 
-void waiting_list(Node_AVL **node, Data_FIX &berkas)
+void waiting_list(Node_AVL **node, Data_FIX berkas)
 {
     // Convert tanggal nikah (char array) ke integer
     // Format kembalian: TahunBulanTanggal
@@ -339,7 +341,7 @@ int done(Node_AVL **node, Node_SINGLY **head){
 	return 0;
 }
 */
-int cancel(Node_AVL **node, char (&tanggal)[11], Node_SINGLY **head) {
+int cancel(Node_AVL **node, char tanggal[11], Node_SINGLY **head) {
 	Node_AVL *temp = *node;
 	int flag = 0;
 	unsigned int tgl_int = str_to_int(tanggal);
@@ -352,7 +354,7 @@ int cancel(Node_AVL **node, char (&tanggal)[11], Node_SINGLY **head) {
 			selesai_digunakan(head, temp->nip_penghulu);
 			*node = delete_node(temp, temp->tanggal);
             system("CLS");
-			printf("\nPernikahan telah dibatalkan.");
+			printf("Pernikahan telah dibatalkan.");
 			flag = 1;
 		}
 	}

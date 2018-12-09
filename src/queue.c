@@ -56,14 +56,14 @@ int enqueue(Queue *antrian)
 	}
 }
 
-void display(Queue antrian,int batas)
+void display(Queue antrian, int batas)
 {
-	int x=34,y=0;
+	int x = 34, y = 0;
 	Node_QUE *current = antrian.front;
 	if (current != NULL) {
 		for(;batas>1;batas--)
-			current=current->next;
-		while (current != NULL && batas <= 3) {
+			current = current->next;
+		while (current != NULL && batas <= 6) {
 				gotoXY(x,y+=2);
 				printf("Nomor antrian\t\t\t: %d", current->nomor_antrian);
 				gotoXY(x,++y);
