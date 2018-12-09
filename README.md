@@ -13,8 +13,8 @@ Collaborators:
 - Waiting List ==> AVL Tree
 
 ### CARA COMPILE + EXECUTE
-- Compile: g++ *.c *.cpp
-- Execute: nama_file (biasane jenenge huruf a tok)
+- Compile: gcc -std=c11 *.c -o TALK_TO_THE_HAND.exe
+- Execute: TALK_TO_THE_HAND.exe [Enter]
 
 ### CMD
 Windows size = 120 x 40
