@@ -223,9 +223,21 @@ int inorder(Node_AVL *node, int batasBawah, int *y, int batasAtas)
         batasBawah--;
         if (0 >= batasBawah && batasBawah > batasAtas * -1) {
             gotoXY(37, *y += 2);
-            printf("%llu",node->nik);
-            gotoXY(37, *y += 2);
-            printf("Calon suami\t: %s",node->casa);
+            printf("Penghulu\t\t: %s",node->nama_penghulu);
+            gotoXY(37, ++*y);
+			printf("Calon suami\t: %s",node->casa);
+            gotoXY(37, ++*y);
+			printf("Nip suami\t\t: %s",node->nik_casa);
+            gotoXY(37, ++*y);
+			printf("Calon istri\t: %s",node->casi);
+            gotoXY(37, ++*y);
+			printf("Nip istri\t\t: %s",node->nik_casi);
+            gotoXY(37, ++*y);
+			printf("Alamat\t\t: %s",node->alamat);
+            gotoXY(37, ++*y);
+			printf("Tanggal\t\t: %s",node->tgl_nikah);
+            gotoXY(37, ++*y);
+			printf("No telp\t\t: %llu",node->no_telp);
         }
         batasBawah = inorder(node->right, batasBawah, y, batasAtas);
     }
@@ -292,8 +304,10 @@ unsigned long long convert_to_digit(const char number, unsigned long long *x)
 	return digit;
 }
 
-unsigned long long str_to_int(const char nik_casa[11], int length)
+unsigned long long str_to_int(const char nik_casa[11])
 {
+	//hitung length
+	int length = sizeof(nik_casa)/sizeof(nik_casa[0]);
 	// Misal 17081010051 dengan indeks urut dari 0
 	unsigned long long nik_casa_int = 0, x = 1;
 
@@ -332,20 +346,20 @@ int done(Node_AVL **node, Node_SINGLY **head){
 	return 0;
 }
 */
-int cancel(Node_AVL **node, char nik_casa[11], Node_SINGLY **head) {
+int cancel(Node_AVL **node, char nik_casa[11], Node_SINGLY **head,int flag) {
 	Node_AVL *temp = *node;
-	int flag = 0;
+	//int flag = 0;
 	unsigned long long nik_casa_int = str_to_int(nik_casa);
 	if (temp != NULL) {
 		if (temp->nik != nik_casa_int) {
-			flag = cancel(&(temp->left), nik_casa, head);
-			flag = cancel(&(temp->right), nik_casa, head);
+			flag = cancel(&(temp->left), nik_casa, head, flag);
+			flag = cancel(&(temp->right), nik_casa, head, flag);
 		}
 		if (temp->nik == nik_casa_int) {
 			selesai_digunakan(head, temp->nip_penghulu);
 			*node = delete_node(temp, temp->nik);
             system("CLS");
-			printf("Pernikahan telah dibatalkan.");
+			printf("Pernikahan telah dibatalkan / selesai.");
 			flag = 1;
 		}
 	}

@@ -119,6 +119,7 @@ void edit(Node_SINGLY **head)
 			printf("\nPegawai sedang digunakan!");
 		else
 		{
+			fflush(stdin);
 			printf("\nInput data baru untuk NIP %s\n", temp->nip);
 			printf("Nama\t: ");
 			scanf("%[^\n]%*c", &(temp->nama));

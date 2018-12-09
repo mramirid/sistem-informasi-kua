@@ -79,7 +79,7 @@ void destroy_tree(Node_AVL **node);
 // void inorder(Node_AVL *node);
 void waiting_list(Node_AVL **node, Data_FIX berkas);
 // int done(Node_AVL **node, Node_SINGLY **head);
-int cancel(Node_AVL **node, char tanggal[11], Node_SINGLY **head);
+int cancel(Node_AVL **node, char tanggal[11], Node_SINGLY **head,int flag);
 Node_AVL* min_value_node(Node_AVL *node);
 
 void gotoXY(int x, int y);

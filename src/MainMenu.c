@@ -92,7 +92,7 @@ void menuPegawai(int *jmlhPegawai) {
 		switch(pilihan) {
 			case 1:
 				if (tambah_data(&head_sing))
-					*jmlhPegawai++;
+					(*jmlhPegawai)++;
 				getch();
 				break;
 			case 2:
@@ -109,7 +109,13 @@ void menuPegawai(int *jmlhPegawai) {
 				break;
 			case 5:
 				if (hapus(&head_sing))
-					*jmlhPegawai--;
+					(*jmlhPegawai)--;
+				getch();
+				break;
+			case 6:
+				break;
+			default:
+				printf("Pilihan Tidak Ada");
 				getch();
 				break;
 		}
@@ -166,7 +172,7 @@ void menuAntrian(int *jmlhWaiting) {
 						
 						printf("\nData di atas akan dimasukan ke dalam waiting list.");
 						
-						*jmlhWaiting++;
+						(*jmlhWaiting)++;
 						
 						waiting_list(&root_avl, berkas);
 						free(hasilProses);
@@ -197,13 +203,12 @@ void menuAntrian(int *jmlhWaiting) {
 }
 
 void menuWaiting(int *jmlhWaiting) {
-	int pilihan, batasBawah = 1, batasAtas = 3, y;
-	char tanggal[11];
+	int pilihan, batasBawah = 1, batasAtas = 2, y;
+	char nik_casa[11];
 	Node_AVL *temp = NULL;
 	do {
 		y = 0;
-		batasAtas = batasBawah + 3;
-		
+		batasAtas = batasBawah + 2;
 		gambar(" WAITING LIST ");
 		if (root_avl == NULL) {
 			gotoXY(35, y + 2);
@@ -218,8 +223,8 @@ void menuWaiting(int *jmlhWaiting) {
 			case 1:
 				if (root_avl != NULL) {
 					temp = min_value_node(root_avl);
-					if (cancel(&root_avl, temp->tgl_nikah, &head_sing))
-						*jmlhWaiting--;	
+					if (cancel(&root_avl, temp->nik_casa, &head_sing, 0))
+						--(*jmlhWaiting);	
 				}
 				else {
 					system("cls");
@@ -230,10 +235,10 @@ void menuWaiting(int *jmlhWaiting) {
 			case 2:
 				if (root_avl != NULL) {
 					system("cls");
-					printf("Tanggal yang ingin dibatalkan (format: dd-mm-yyyy): ");
-					scanf("%s",tanggal);
-					if (cancel(&root_avl, tanggal, &head_sing))
-						*jmlhWaiting--;
+					printf("nik casa : ");
+					scanf("%s",nik_casa);
+					if (cancel(&root_avl, nik_casa, &head_sing, 0))
+						--(*jmlhWaiting);
 				}
 				else {
 					system("cls");
@@ -242,12 +247,12 @@ void menuWaiting(int *jmlhWaiting) {
 				getch();
 				break;
 			case 3:
-				if ((batasBawah + 4) <= *jmlhWaiting)
-					batasBawah += 4;
+				if ((batasBawah + 3) <= *jmlhWaiting)
+					batasBawah += 3;
 				break;
 			case 4:
-				if ((batasBawah - 4) > 0 )
-					batasBawah -= 4;
+				if ((batasBawah - 3) > 0 )
+					batasBawah -= 3;
 				break;
 			case 5:
 				break;

@@ -23,6 +23,8 @@ bool isEmpty(Queue antrian)
 
 int enqueue(Queue *antrian)
 {
+	Node_QUE *temp = antrian->front;
+	int flag=1;
 	if (antrian->count == MAX)
 		printf("Maaf, antrian pendaftaran sudah penuh!");
 	else
@@ -37,22 +39,35 @@ int enqueue(Queue *antrian)
 		scanf("%[^\n]%*c", &(new_node->casa));
 		printf("NIK Pemohon\t\t: ");
 		scanf("%s",&(new_node->nik));
-
-		if (isEmpty(*antrian))
-		{
-			antrian->front = new_node;
-			antrian->rear = new_node;
-			new_node->prev = NULL;
+		
+		while (temp != NULL){
+			if ( !(strcmp(temp->nik,new_node->nik)) ){
+				flag=0;
+				break;
+			}
+			temp=temp->next;
 		}
-		else
-		{
-			antrian->rear->next = new_node;
-			new_node->prev = antrian->rear;
-			antrian->rear = new_node;
+		if(flag){
+			if (isEmpty(*antrian))
+			{
+				antrian->front = new_node;
+				antrian->rear = new_node;
+				new_node->prev = NULL;
+			}
+			else
+			{
+				antrian->rear->next = new_node;
+				new_node->prev = antrian->rear;
+				antrian->rear = new_node;
+			}
+	
+			printf("\nData berhasil dimasukan.");
+			antrian->count++;	
 		}
-
-		printf("\nData berhasil dimasukan.");
-		antrian->count++;
+		else{
+			printf("NIK tidak boleh sama");
+			antrian->urutan--;
+		}
 	}
 }
 
