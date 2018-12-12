@@ -13,7 +13,7 @@ Collaborators:
 - Waiting List ==> AVL Tree
 
 ### CARA COMPILE + EXECUTE
-- Compile: gcc -std=c11 *.c -o TALK_TO_THE_HAND.exe
+- Compile: gcc -O4 -std=c11 *.c -o TALK_TO_THE_HAND.exe
 - Execute: TALK_TO_THE_HAND.exe [Enter]
 
 ### CMD
