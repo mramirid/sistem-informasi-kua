@@ -1,15 +1,18 @@
-#include "header.h"
-#include <conio.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include "queue.h"
 
 #define MAX 50
+
+void gotoXY(int x, int y);
 
 Queue createQueue()
 {
 	Queue antrian;
 	antrian.count = 0;
-	antrian.urutan = 1;
+	antrian.counter_urutan = 1;
 	antrian.front = NULL;
 	antrian.rear = NULL;
 
@@ -21,7 +24,7 @@ bool isEmpty(Queue antrian)
 	return antrian.count == 0 ? true : false;
 }
 
-int enqueue(Queue *antrian)
+void enqueue(Queue *antrian)
 {
 	Node_QUE *temp = antrian->front;
 	int flag = 1;
@@ -32,17 +35,17 @@ int enqueue(Queue *antrian)
 		Node_QUE *new_node = (Node_QUE *)malloc(sizeof(Node_QUE));
 		new_node->next = NULL;
 
-		printf("Nomor Antrian\t\t: %d\n", antrian->urutan);
-		new_node->nomor_antrian = antrian->urutan++;
+		printf("Nomor Antrian\t\t: %d\n", antrian->counter_urutan);
+		new_node->nomor_antrian = antrian->counter_urutan++;
 		fflush(stdin);
 		printf("Pemohon (calon suami)\t: ");
 		scanf("%[^\n]%*c", &(new_node->casa));
 		printf("NIK Pemohon\t\t: ");
-		scanf("%s",&(new_node->nik));
+		scanf("%llu",&(new_node->nik_casa));
 		
 		// Cek NIK pemohon, apakah sama?
 		while (temp != NULL) {
-			if (!(strcmp(temp->nik, new_node->nik))) {
+			if (temp->nik_casa == new_node->nik_casa) {
 				flag = 0;
 				break;
 			}
@@ -68,7 +71,7 @@ int enqueue(Queue *antrian)
 		}
 		else {
 			printf("\nNIK tidak boleh sama!");
-			antrian->urutan--;
+			antrian->counter_urutan--;
 		}
 	}
 }
@@ -81,17 +84,17 @@ void display(Queue antrian, int batas)
 		for(;batas>1;batas--)
 			current = current->next;
 		while (current != NULL && batas <= 6) {
-				gotoXY(x,y+=2);
+				gotoXY(x, y+= 2);
 				printf("Nomor antrian\t\t\t: %d", current->nomor_antrian);
-				gotoXY(x,++y);
+				gotoXY(x, ++y);
 				printf("Nama pemohon (calon suami)\t: %s", current->casa);
-				gotoXY(x,++y);
-				printf("NIK Pemohon\t\t\t: %s", current->nik);
+				gotoXY(x, ++y);
+				printf("NIK Pemohon\t\t\t: %llu", current->nik_casa);
 				current = current->next;
 				batas++;
 		}
 	}
-	else{
+	else {
 		gotoXY(x, y += 2);
 		printf("DATA KOSONG");
 	}

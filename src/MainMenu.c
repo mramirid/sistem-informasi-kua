@@ -1,70 +1,50 @@
-#include"header.h"
+#include <stdio.h>
+#include <stdlib.h>
 #include <conio.h>
+#include <string.h>
 #include <windows.h>
+#include "singly_ll.h"
+#include "queue.h"
+#include "avl.h"
+
+// Singly Linked-list
+int tambah_data(Node_SINGLY **head);
+void cetak(Node_SINGLY *head, int next); // Variabel next, awal data mana yang ditampilkan.
+void edit(Node_SINGLY **head);
+int hapus(Node_SINGLY **head);
+void destroy_list(Node_SINGLY **head);
+Node_SINGLY* gunakan_pegawai(Node_SINGLY **head);
+
+// Queue
+Queue createQueue();
+void enqueue(Queue *antrian);
+Node_QUE* dequeue(Queue *antrian);
+void display(Queue antrian, int batas);
+void destroy_queue(Queue *antrian);
+
+// AVL Tree
+Node_AVL* insert(Node_AVL *node, Data_FIX berkas);
+Node_AVL* min_value_node(Node_AVL *node);
+void destroy_tree(Node_AVL **node);
+int inorder(Node_AVL *node, int batasBawah, int *y, int batasAtas);
+void waiting_list(Node_AVL **node, Data_FIX berkas);
+int cancel(Node_AVL **node, unsigned long long nik_casa, Node_SINGLY **head, int flag);
+int search(Node_AVL *node, const char tanggal_nikah[11], int flag);
 
 Node_SINGLY *head_sing;
 Queue antrian;
 Node_AVL *root_avl;
 
-// tulisan() = menampilkan tulisan pada menu (kode menu, koordinat x awal, koordinat y akhir)
-int tulisan(int menu, int x, int y);
-void mainMenu();
-void menuPegawai(int *jmlhPegawai);
-void menuAntrian(int *jmlhWaiting);
-void menuWaiting(int *jmlhWaiting);
-void gambar(const char *str);
-void gotoXY(int x, int y);
+void gotoXY(int x, int y)
+{
+	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+	COORD CursorPosition;
 
-int main() {
-	head_sing = NULL;
-	antrian = createQueue();
-	root_avl = NULL;
+	CursorPosition.X = x; // Locates column
+	CursorPosition.Y = y; // Locates Row
 
-	mainMenu();
-
-	destroy_list(&head_sing);
-	destroy_queue(&antrian);
-	destroy_tree(&root_avl);
-
-	return 0;
-}
-
-void mainMenu() {
-	int pilihan, jmlhPegawai = 0, jmlhAntrian = 0, jmlhWaiting = 0;
-	do {
-		system("cls");
-		for( int y=0; y<20; y++) {
-			for( int x=48; x<73; x++) {
-				if ((x == 48 || x == 72) || (y == 0 || y == 19)) {
-					gotoXY(x, y);
-					printf("%c", 219);
-				}
-			}
-		}
-
-		gotoXY(55, 0);
-		printf(" MAIN MENU ");
-
-		pilihan = tulisan(1, 50, 2);
-
-		system("cls");
-		switch(pilihan) {
-			case 1:
-				menuPegawai(&jmlhPegawai);
-				break;
-			case 2:
-				menuAntrian(&jmlhWaiting);
-				break;
-			case 3:
-				menuWaiting(&jmlhWaiting);
-				break;
-			case 4:
-				break;
-			default:
-				printf("PILIHAN TIDAK ADA");
-				getch();
-		}
-	} while(pilihan != 4);
+	// Sets position for next thing to be printed
+	SetConsoleCursorPosition(console, CursorPosition);
 }
 
 void gambar(const char *str) {
@@ -79,6 +59,65 @@ void gambar(const char *str) {
 	}
 	gotoXY(57, 0);
 	printf("%s", str);
+}
+
+// tulisan() = menampilkan tulisan pada menu (kode menu, koordinat x awal, koordinat y akhir)
+int tulisan(int menu, int x, int y) {
+	int pilihan;
+	switch (menu) {
+		case 1:	//========== iki kanggo main menu ================
+			gotoXY(x + 2, y);
+			printf("1.Menu Pegawai");
+			gotoXY(x + 2, y += 2);
+			printf("2.Antrian");
+			gotoXY(x + 2, y += 2);
+			printf("3.Waiting List");
+			gotoXY(x + 2, y += 2);
+			printf("4.EXIT");
+			break;
+		case 2:	//=========== iki kanggo Menu Pegawai ============
+			gotoXY(x + 2, y);
+			printf("1. Tambah data");
+			gotoXY(x + 2, y += 2);
+			printf("2. Edit data");
+			gotoXY(x + 2, y += 2);
+			printf("3. Hapus data");
+			gotoXY(x + 2, y += 2);
+			printf("4. Next");
+			gotoXY(x + 2, y += 2);
+			printf("5. Prev");
+			gotoXY(x + 2, y += 2);
+			printf("6. Back to menu");
+			break;
+		case 3:	//=========== iki kanggo antrian ===============
+			gotoXY(x + 2, y);
+			printf("1. Tambah Antrian");
+			gotoXY(x + 2, y += 2);
+			printf("2. Proses Antrian");
+			gotoXY(x + 2, y += 2);
+			printf("3. Next");
+			gotoXY(x + 2, y += 2);
+			printf("4. Prev");
+			gotoXY(x + 2, y += 2);
+			printf("5. Back to menu");
+			break;
+		case 4:	//============iki kanggo waiting ===============
+			gotoXY(x + 2, y);
+			printf("1. Cari data");
+			gotoXY(x + 2, y += 2);
+			printf("2. Dibatalkan/Telah selesai");
+			gotoXY(x + 2, y += 2);
+			printf("3. Next");
+			gotoXY(x + 2, y += 2);
+			printf("4. Prev");
+			gotoXY(x + 2, y += 2);
+			printf("5. Back to menu");
+			break;
+	}
+	gotoXY(x + 2, y + 2);
+	printf("input pilihan : ");
+	scanf("%d", &pilihan);
+	return pilihan;
 }
 
 void menuPegawai(int *jmlhPegawai) {
@@ -101,17 +140,17 @@ void menuPegawai(int *jmlhPegawai) {
 				getch();
 				break;
 			case 3:
-				if ((a + 5) <= *jmlhPegawai)
-					a += 5;
-				break;
-			case 4:
-				if ((a - 5) > 0)
-					a -= 5;
-				break;
-			case 5:
 				if (hapus(&head_sing))
 					(*jmlhPegawai)--;
 				getch();
+				break;
+			case 4:
+				if ((a + 5) <= *jmlhPegawai)
+					a += 5;
+				break;
+			case 5:
+				if ((a - 5) > 0)
+					a -= 5;
 				break;
 			case 6:
 				break;
@@ -153,18 +192,18 @@ void menuAntrian(int *jmlhWaiting) {
 						fflush(stdin);
 						printf("Nama penghulu\t\t: %s\n", pegawai->nama);
 						strcpy(berkas.nama_penghulu, pegawai->nama);
-						printf("NIP penghulu\t\t: %s\n", pegawai->nip);
-						strcpy(berkas.nip_penghulu, pegawai->nip);
+						printf("NIP penghulu\t\t: %llu\n", pegawai->nip);
+						berkas.nip_penghulu = pegawai->nip;
 						printf("Nama calon suami\t: %s\n", hasilProses->casa);
 						strcpy(berkas.casa, hasilProses->casa);
-						printf("NIK calon suami\t\t: %s\n", hasilProses->nik);
-						strcpy(berkas.nik_casa, hasilProses->nik);
+						printf("NIK calon suami\t\t: %llu\n", hasilProses->nik_casa);
+						berkas.nik_casa = hasilProses->nik_casa;
 						printf("Nama calon istri\t: ");
 						scanf("%[^\n]%*c", &(berkas.casi));
 						printf("NIK calon istri\t\t: ");
-						scanf("%s",&(berkas.nik_casi));
+						scanf("%llu",&(berkas.nik_casi));
 						printf("Nomor telp\t\t: ");	// Yang bisa dihubungi
-						scanf("%u", &(berkas.no_telp));
+						scanf("%llu", &(berkas.no_telp));
 						fflush(stdin);
 						printf("Alamat\t\t\t: ");		// Lokasi pernikahan maksute?
 						scanf("%[^\n]%*c",&(berkas.alamat));
@@ -205,8 +244,9 @@ void menuAntrian(int *jmlhWaiting) {
 
 void menuWaiting(int *jmlhWaiting) {
 	int pilihan, batasBawah = 1, batasAtas = 2, y;
-	char nik_casa[11];
+	unsigned long long nik_casa;
 	Node_AVL *temp = NULL;
+	char cari[11];
 	do {
 		y = 0;
 		batasAtas = batasBawah + 2;
@@ -224,9 +264,11 @@ void menuWaiting(int *jmlhWaiting) {
 		switch (pilihan) {
 			case 1:
 				if (root_avl != NULL) {
-					temp = min_value_node(root_avl);
-					if (cancel(&root_avl, temp->nik_casa, &head_sing, 0))
-						--(*jmlhWaiting);	
+					system("cls");
+					printf("Input Tanggal: ");
+					scanf("%s", &cari);
+					if (!search(root_avl, cari, 0))
+						printf("\n\nData tidak ada.");
 				}
 				else {
 					system("cls");
@@ -238,7 +280,7 @@ void menuWaiting(int *jmlhWaiting) {
 				system("cls");
 				if (root_avl != NULL) {
 					printf("NIK Calon suami: ");
-					scanf("%s",nik_casa);
+					scanf("%llu", &nik_casa);
 					if (cancel(&root_avl, nik_casa, &head_sing, 0))
 						--(*jmlhWaiting);
 				}
@@ -266,70 +308,54 @@ void menuWaiting(int *jmlhWaiting) {
 	} while (pilihan != 5);
 }
 
-int tulisan(int menu, int x, int y) {
-	int pilihan;
-	switch (menu) {
-		case 1:	//========== iki kanggo main menu ================
-			gotoXY(x + 2, y);
-			printf("1.Menu Pegawai");
-			gotoXY(x + 2, y += 2);
-			printf("2.Antrian");
-			gotoXY(x + 2, y += 2);
-			printf("3.Waiting List");
-			gotoXY(x + 2, y += 2);
-			printf("4.EXIT");
-			break;
-		case 2:	//=========== iki kanggo Menu Pegawai ============
-			gotoXY(x + 2, y);
-			printf("1. Tambah data");
-			gotoXY(x + 2, y += 2);
-			printf("2. Edit data");
-			gotoXY(x + 2, y += 2);
-			printf("3. Next");
-			gotoXY(x + 2, y += 2);
-			printf("4. Prev");
-			gotoXY(x + 2, y += 2);
-			printf("5. Hapus data");
-			gotoXY(x + 2, y += 2);
-			printf("6. Back to menu");
-			break;
-		case 3:	//=========== iki kanggo antrian ===============
-			gotoXY(x + 2, y);
-			printf("1. Tambah Antrian");
-			gotoXY(x + 2, y += 2);
-			printf("2. Proses Antrian");
-			gotoXY(x + 2, y += 2);
-			printf("3. Next");
-			gotoXY(x + 2, y += 2);
-			printf("4. Prev");
-			gotoXY(x + 2, y += 2);
-			printf("5. Back to menu");
-			break;
-		case 4:	//============iki kanggo waiting ===============
-			gotoXY(x + 2, y);
-			printf("1. Selesai dilaksanakan");
-			gotoXY(x + 2, y += 2);
-			printf("2. Dibatalkan");
-			gotoXY(x + 2, y += 2);
-			printf("3. Next");
-			gotoXY(x + 2, y += 2);
-			printf("4. Prev");
-			gotoXY(x + 2, y += 2);
-			printf("5. Back to menu");
-			break;
-	}
-	gotoXY(x + 2, y + 2);
-	printf("input pilihan : ");
-	scanf("%d", &pilihan);
-	return pilihan;
+void mainMenu() {
+	int pilihan, jmlhPegawai = 0, jmlhAntrian = 0, jmlhWaiting = 0;
+	do {
+		system("cls");
+		for( int y=0; y<20; y++) {
+			for( int x=48; x<73; x++) {
+				if ((x == 48 || x == 72) || (y == 0 || y == 19)) {
+					gotoXY(x, y);
+					printf("%c", 219);
+				}
+			}
+		}
+
+		gotoXY(55, 0);
+		printf(" MAIN MENU ");
+
+		pilihan = tulisan(1, 50, 2);
+
+		system("cls");
+		switch(pilihan) {
+			case 1:
+				menuPegawai(&jmlhPegawai);
+				break;
+			case 2:
+				menuAntrian(&jmlhWaiting);
+				break;
+			case 3:
+				menuWaiting(&jmlhWaiting);
+				break;
+			case 4:
+				break;
+			default:
+				printf("PILIHAN TIDAK ADA");
+				getch();
+		}
+	} while(pilihan != 4);
 }
 
-void gotoXY(int x, int y)
-{
-	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
-	COORD CursorPosition;
+int main() {
+	head_sing = NULL;
+	antrian = createQueue();
+	root_avl = NULL;
 
-	CursorPosition.X = x; // Locates column
-	CursorPosition.Y = y; // Locates Row
-	SetConsoleCursorPosition(console, CursorPosition); // Sets position for next thing to be printed
+	mainMenu();
+
+	destroy_list(&head_sing);
+	destroy_queue(&antrian);
+	destroy_tree(&root_avl);
+
+	return 0;
 }

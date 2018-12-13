@@ -1,6 +1,8 @@
-#include "header.h"
-#include <string.h>
-#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include "singly_ll.h"
+
+void gotoXY(int x, int y);
 
 Node_SINGLY* create_node()
 {
@@ -42,14 +44,14 @@ int tambah_data(Node_SINGLY **head)
 	printf("\nNama\t: ");
 	scanf("%[^\n]%*c", &(new_node->nama));
 	printf("NIP\t: ");
-	scanf("%s", &(new_node->nip));
+	scanf("%llu", &(new_node->nip));
 	printf("Usia\t: ");
 	scanf("%d", &(new_node->usia));
 
 	int flag = 1;
 	while (temp != NULL)
 	{
-		if (!strcmp(temp->nip, new_node->nip))
+		if (temp->nip == new_node->nip)
 		{
 			flag = 0;
 			break;
@@ -85,7 +87,7 @@ void cetak(Node_SINGLY *head, int next)
 			gotoXY(x, y += 2);
 			printf("Nama\t\t: %s", temp->nama);
 			gotoXY(x, ++y);
-			printf("NIP\t\t: %s", temp->nip);
+			printf("NIP\t\t: %llu", temp->nip);
 			gotoXY(x, ++y);
 			printf("Usia\t\t: %d", temp->usia);
 			gotoXY(x, ++y);
@@ -103,12 +105,12 @@ void cetak(Node_SINGLY *head, int next)
 
 void edit(Node_SINGLY **head)
 {
-	char nip[20];
+	unsigned long long nip;
 	Node_SINGLY *temp = *head;
 
 	printf("Input NIP data yang ingin sunting: ");
-	scanf("%s", &nip);
- 	while (temp != NULL && strcmp(temp->nip, nip))
+	scanf("%llu", &nip);
+ 	while (temp != NULL && temp->nip != nip)
 		temp = temp->right;
 
 	if (temp == NULL)
@@ -120,8 +122,8 @@ void edit(Node_SINGLY **head)
 		else
 		{
 			fflush(stdin);
-			printf("\nInput data baru untuk NIP %s\n", temp->nip);
-			printf("Nama\t: ");
+			printf("\nInput data baru untuk NIP %llu\n", temp->nip);
+			printf("\nNama\t: ");
 			scanf("%[^\n]%*c", &(temp->nama));
 			printf("Usia\t: ");
 			scanf("%d", &(temp->usia));
@@ -132,13 +134,13 @@ void edit(Node_SINGLY **head)
 
 int hapus(Node_SINGLY **head)
 {
-	char nip[20];
+	unsigned long long nip;
 	Node_SINGLY* temp = *head, *pre = NULL;
 
 	printf("Input NIP data yang ingin dihapus: ");
-	scanf("%s", &nip);
+	scanf("%llu", &nip);
 
-	while (temp != NULL && strcmp(temp->nip, nip))
+	while (temp != NULL && temp->nip != nip)
 	{
 		pre = temp;
 		temp = temp->right;
@@ -178,10 +180,10 @@ Node_SINGLY* gunakan_pegawai(Node_SINGLY **head)
 }
 
 
-void selesai_digunakan(Node_SINGLY **head, char *nip)
+void selesai_digunakan(Node_SINGLY **head, unsigned long long nip)
 {
 	Node_SINGLY *current = *head;
-	while (current != NULL && strcmp(current->nip, nip))
+	while (current != NULL && current->nip != nip)
 		current = current->right;
 
 	if (current)
