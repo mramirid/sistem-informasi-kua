@@ -2,7 +2,7 @@
 Final Project mata kuliah Struktur Data
 
 ### Collaborators
-<br>1. Chilyatun Nisa' (17081010050) [Github profile](https://github.com/chilaact)
+1. Chilyatun Nisa' (17081010050) [Github profile](https://github.com/chilaact)
 <br>2. Amir Muhammad Hakim (17081010051) [Github profile](https://github.com/mramirid/)
 <br>3. Fajar Andhika Putra (17081010054) [Github profile](https://github.com/FjDhika)
 <br>4. Kholilul Rachman N. M. (17081010055) [Github profile](https://github.com/kholilboy)
