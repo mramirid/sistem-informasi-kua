@@ -1,5 +1,8 @@
-# STUDI KASUS KUA
-Final Project mata kuliah Struktur Data
+# SISTEM INFORMASI KUA
+
+Final Project mata kuliah Struktur Data. Sistem informasi KUA / Sistem informasi manajemen nikah berbasis CLI.
+
+Sistem ini menggunakan in-memory database sehingga data tidak disimpan pada database real. Apabila aplikasi ditutup maka data akan hilang
 
 ### Collaborators
 
