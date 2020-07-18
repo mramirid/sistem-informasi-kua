@@ -4,6 +4,12 @@ Final Project mata kuliah Struktur Data. Sistem informasi KUA / Sistem informasi
 
 Sistem ini menggunakan in-memory database sehingga data tidak disimpan pada database real. Apabila aplikasi ditutup maka data akan hilang
 
+### Screenshot
+
+<p align="center">
+  <img src="https://i.ibb.co/Mn73v4N/ss-kua.png" alt="SS Sistem Informasi KUA" border="1">
+</p>
+
 ### Collaborators
 
 1. Chilyatun Nisa' (17081010050) [Github profile](https://github.com/chilaact)
